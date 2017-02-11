@@ -7,10 +7,10 @@ public abstract class surface {
 	 }
 	 public point check(ray r){
 		 
-		 vec t=this.p.opp();
+		 vec t=vec.sub(r.p,this.p);
 		 double h=1/vec.dot(vec.cro(r.d,this.v),this.u);
-		 double rt=(vec.dot(vec.cro(t,u),v))*h;
-		 if(rt>=0&&vec.dot(r.d, this.n)>0){
+		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
+		 if(rt>=0&&vec.dot(r.d, this.n)<0){
 			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
 			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
 			 if(ru>=0&&rv>=0&&((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1))){
@@ -116,7 +116,6 @@ class lightSurface extends surface{
 		this.u=u;
 		this.v=v;
 		this.n=vec.cro(u, v).unit();
-		vec nnnn=vec.cro(u, v);
 		this.light=l;
 		this.shape=sh;
 	}

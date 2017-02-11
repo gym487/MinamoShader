@@ -52,8 +52,8 @@ public class cam {
             out.write("P3\n");
             out.write(String.valueOf(this.x)+" "+String.valueOf(this.y)+"\n");
             out.write("255\n");
-    		for(int xx=0;xx<this.x;xx++){
-    			for(int yy=0;yy<this.y;yy++){
+    		for(int yy=0;yy<this.y;yy++){
+    			for(int xx=0;xx<this.x;xx++){
     				out.write(String.valueOf(Math.round(this.film[xx][yy].r))+" "+String.valueOf(Math.round(this.film[xx][yy].g))+" "+String.valueOf(Math.round(this.film[xx][yy].b))+" ");
     			} 
     			out.write("\n");
