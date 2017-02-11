@@ -32,6 +32,27 @@ class nnode extends node {
 		}
 		return r;
 	}
+	
+	public void fill(surface[] scene,int sam){
+		for(int i=0;i<this.rn;i++){
+			if(this.rays[i]!=null&&this.childs[i]==null){
+				double distance=1000000000;
+				point ptt=null;
+				for(int j=0;j<scene.length;j++){
+					point pt=scene[j].check(this.rays[i]);
+					if(pt!=null&&pt.t<distance){
+						distance=pt.t;
+						ptt=pt;
+					}
+				}
+				if(ptt!=null){
+					this.childs[i]=ptt.surf.gen(ptt, sam);
+				}else{
+					this.childs[i]=new lnode(new spec(0,0,0));
+				}
+			}
+		}
+	}
 }
 class lnode extends node{
 	private spec col;
