@@ -2,6 +2,9 @@
 public abstract class surface {
 	 
 	 vec p,u,v,n;//point u v normal;
+	 public node gen(ray r,int sam){
+		 return null;
+	 }
 }
 
 class diffSurface extends surface{
@@ -15,9 +18,10 @@ class diffSurface extends surface{
 	}
 }
 
-class mirrSurface extends surface{
+class refSurface extends surface{
 	spec sf,st;
-	public mirrSurface(vec p,vec u,vec v,spec f,spec t){
+	double ref;
+	public refSurface(vec p,vec u,vec v,spec f,spec t){
 		this.p=p;
 		this.u=u;
 		this.v=v;
@@ -25,6 +29,16 @@ class mirrSurface extends surface{
 		this.sf=f;
 		this.st=t;
 	}
-	
+
+}
+class mirrSurface extends surface{
+	spec sf;
+	public mirrSurface(vec p,vec u,vec v,spec f){
+		this.p=p;
+		this.u=u;
+		this.v=v;
+		this.n=vec.cro(u, v);
+		this.sf=f;
+	}
 	
 }

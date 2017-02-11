@@ -30,5 +30,16 @@ public  class vec {
 	public vec mul(int a){
 		return new vec(this.x*a,this.y*a,this.z*a);
 	}
-	
+	public static vec randvec(){
+		return new vec(Math.random(),Math.random(),Math.random());
+	}
+	public static vec normalRand(vec n){
+		vec r=new vec(0,0,0);
+		while(true){
+			r=vec.randvec();
+			if(r.mod()<=1&&r.mod()>=0.01&&vec.dot(r, n)>0)
+				break;
+		}
+		return r;
+	}
 }
