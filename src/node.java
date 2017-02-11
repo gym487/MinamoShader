@@ -1,12 +1,14 @@
+
+
 public abstract class node{
 	public node(){
 	}
 	public spec val(){
 		return null;
 	}
-	public void fill(surface[] scene,int sam){
+	public void fill(){
 	}
-	public void genn(surface[] scene,int sam,spec w){
+	public void genn(spec w){
 	}
 }
 class nnode extends node {
@@ -37,33 +39,34 @@ class nnode extends node {
 		return r;
 	}
 	
-	public void fill(surface[] scene,int sam){
+	public void fill(){
+		
 		for(int i=0;i<this.rn;i++){
 			if(this.rays[i]!=null&&this.childs[i]==null){
 				double distance=1000000000;
 				point ptt=null;
-				for(int j=0;j<scene.length;j++){
-					point pt=scene[j].check(this.rays[i]);
+				for(int j=0;j<minamo.scene.length;j++){
+					point pt=minamo.scene[j].check(this.rays[i]);
 					if(pt!=null&&pt.t<distance){
 						distance=pt.t;
 						ptt=pt;
 					}
 				}
 				if(ptt!=null){
-					this.childs[i]=ptt.surf.gen(ptt, sam);
+					this.childs[i]=ptt.surf.gen(ptt, minamo.sam);
 				}else{
 					this.childs[i]=new lnode(new spec(0,0,0));
 				}
 			}
 		}
 	}
-	public void genn(surface[] scene,int sam,spec w){
+	public void genn(spec w){
 		if(w.tol()>=0.0001){
 			for(int i=0;i<this.childs.length;i++){
-				this.childs[i].fill(scene,sam);
+				this.childs[i].fill();
 			}
 			for(int i=0;i<this.childs.length;i++){
-				this.childs[i].genn(scene,sam,w.mul(this.weights[i]));
+				this.childs[i].genn(w.mul(this.weights[i]));
 			}
 		}else{
 			for(int i=0;i<this.childs.length;i++){
