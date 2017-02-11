@@ -11,7 +11,7 @@ public class cam {
 	vec pos,d,dy,dx;
 	spec[][] film;
 	node[][] filmn;
-	public cam(vec pos,vec d,int x,int y,vec dy){
+	public cam(vec pos,vec d,vec dy,int x,int y){
 		this.pos=pos;
 		this.d=d.unit();
 		this.x=x;
@@ -43,12 +43,11 @@ public class cam {
 	public void print(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		String name=sdf.format(new Date());
-		File ppmf=new File("./"+name+".ppm");
+		File ppmf=new File("./pictures/"+name+".ppm");
         try {
             ppmf.createNewFile(); 
             Writer out = null;
             out = new FileWriter(ppmf,true); 
-        // 写入数据
             out.write("P3\n");
             out.write(String.valueOf(this.x)+" "+String.valueOf(this.y)+"\n");
             out.write("255\n");
@@ -58,7 +57,6 @@ public class cam {
     			} 
     			out.write("\n");
     		}
-            
             out.close();
         } catch (IOException e) {
             e.printStackTrace();

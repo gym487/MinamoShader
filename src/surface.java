@@ -32,7 +32,7 @@ class diffSurface extends surface{
 		this.sd=diff;
 		this.shape=sh;
 	}
-	public diffSurface newdiff(vec o,vec p1,vec p2,spec diff,int sh){
+	public static diffSurface newdiff(vec o,vec p1,vec p2,spec diff,int sh){
 		return new diffSurface(o,vec.sub(p1,o),vec.sub(p2,o),diff,sh);
 	}
 	public node gen(point pt,int n){
@@ -59,7 +59,7 @@ class refSurface extends surface{
 		this.shape=sh;
 		this.ref=ref;
 	}
-	public refSurface newref(vec o,vec p1,vec p2,spec f,spec t,int sh,double ref){
+	public static refSurface newref(vec o,vec p1,vec p2,spec f,spec t,int sh,double ref){
 		
 		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh,ref);
 	}
@@ -96,7 +96,7 @@ class mirrSurface extends surface{
 		this.sf=f;
 		this.shape=sh;
 	}
-	public mirrSurface newmirr(vec o,vec p1,vec p2,spec sf,int sh){
+	public static mirrSurface newmirr(vec o,vec p1,vec p2,spec sf,int sh){
 		return new mirrSurface(o,vec.sub(p1,o),vec.sub(p2,o),sf,sh);
 	}
 	public node gen(point pt,int n){
@@ -119,7 +119,7 @@ class lightSurface extends surface{
 		this.light=l;
 		this.shape=sh;
 	}
-	public lightSurface newlight(vec o,vec p1,vec p2,spec l,int sh){
+	public static lightSurface newlight(vec o,vec p1,vec p2,spec l,int sh){
 		return new lightSurface(o,vec.sub(p1,o),vec.sub(p2,o),l,sh);
 	}
 	public node gen(point pt,int n){
