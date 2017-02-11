@@ -80,7 +80,7 @@ class refSurface extends surface{
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
 				nnode rn=new nnode(1);
 				rn.setRay(rt,0);
-				rn.setW(this.sf,0);
+				rn.setW(this.sf.add(this.st),0);
 				return rn;
 		}
 	}
