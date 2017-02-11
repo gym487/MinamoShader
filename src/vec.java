@@ -25,7 +25,7 @@ public  class vec {
 		return new vec(this.x/this.mod(),this.y/this.mod(),this.z/this.mod());
 	}
 	public static vec cro(vec a,vec b){
-		return new vec(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.y,a.x*b.y-a.y*b.x);
+		return new vec(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x);
 	}
 	public vec mul(double a){
 		return new vec(this.x*a,this.y*a,this.z*a);

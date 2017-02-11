@@ -24,7 +24,7 @@ public class cam {
 	public void shoot1(){
 		for(int xx=0;xx<this.x;xx++){
 			for(int yy=0;yy<this.y;yy++){
-				ray r=new ray(this.pos,vec.add(this.d,vec.add(this.dx.mul((xx-x/2)/x), this.dy.mul((yy-y/2)/y))));
+				ray r=new ray(this.pos,vec.add(this.d,vec.add(this.dx.mul((xx-((double)this.x/2))/(double)this.x), this.dy.mul((yy-(double)(this.y/2))/(double)this.y))));
 				nnode nn=new nnode(1);
 				nn.setRay(r,0);
 				nn.setW(new spec(1,1,1),0);
@@ -35,6 +35,7 @@ public class cam {
 	public void shoot2(){
 		for(int xx=0;xx<this.x;xx++){
 			for(int yy=0;yy<this.y;yy++){
+				this.filmn[xx][yy].fill();
 				this.filmn[xx][yy].genn(new spec(1,1,1));
 				this.film[xx][yy]=filmn[xx][yy].val();
 			}
@@ -53,7 +54,7 @@ public class cam {
             out.write("255\n");
     		for(int xx=0;xx<this.x;xx++){
     			for(int yy=0;yy<this.y;yy++){
-    				out.write(String.valueOf(Math.round(this.film[xx][yy].r))+" "+String.valueOf(Math.round(this.film[xx][yy].g))+" "+String.valueOf(Math.round(this.film[xx][yy].b)));
+    				out.write(String.valueOf(Math.round(this.film[xx][yy].r))+" "+String.valueOf(Math.round(this.film[xx][yy].g))+" "+String.valueOf(Math.round(this.film[xx][yy].b))+" ");
     			} 
     			out.write("\n");
     		}

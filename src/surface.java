@@ -116,6 +116,7 @@ class lightSurface extends surface{
 		this.u=u;
 		this.v=v;
 		this.n=vec.cro(u, v).unit();
+		vec nnnn=vec.cro(u, v);
 		this.light=l;
 		this.shape=sh;
 	}
