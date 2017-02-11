@@ -53,7 +53,7 @@ class nnode extends node {
 					}
 				}
 				if(ptt!=null){
-					this.childs[i]=ptt.surf.gen(ptt, minamo.sam);
+					this.childs[i]=ptt.surf.gen(ptt);
 				}else{
 					this.childs[i]=new lnode(new spec(0,0,0));
 				}
@@ -61,7 +61,7 @@ class nnode extends node {
 		}
 	}
 	public void genn(spec w){
-		if(w.tol()>=0.0001){
+		if(w.tol()>=0.01){
 			for(int i=0;i<this.childs.length;i++){
 				this.childs[i].fill();
 			}

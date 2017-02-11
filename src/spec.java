@@ -9,7 +9,7 @@ public class spec {
 	public spec mul(spec w){
 		return new spec(w.r*this.r,w.g*this.g,w.b*this.b);
 	}
-	public spec mul(int  w){
+	public spec mul(double  w){
 		return new spec(w*this.r,w*this.g,w*this.b);
 	}
 	public spec add(spec a){

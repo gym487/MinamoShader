@@ -34,13 +34,13 @@ public  class vec {
 		return new vec(this.x/this.mod(),this.y/this.mod(),this.z/this.mod());
 	}
 	public static vec randvec(){
-		return new vec(Math.random(),Math.random(),Math.random());
+		return new vec(1-Math.random()*2,1-Math.random()*2,1-Math.random()*2);
 	}
 	public static vec normalRand(vec n){
 		vec r=new vec(0,0,0);
 		while(true){
 			r=vec.randvec();
-			if(r.mod()<=1&&r.mod()>=0.01&&vec.dot(r, n)>0)
+			if(r.mod()<=1&&r.mod()>=0.01&&vec.dot(r, n)>=0)
 				break;
 		}
 		return r;
