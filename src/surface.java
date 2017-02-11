@@ -2,7 +2,7 @@
 public abstract class surface {
 	 int shape;//0=tri 1=squ
 	 vec p,u,v,n;//point u v normal;
-	 public nnode gen(point pt,int n){
+	 public node gen(point pt,int n){
 		 return null;
 	 }
 	 public point check(ray r){
@@ -35,7 +35,7 @@ class diffSurface extends surface{
 	public diffSurface newdiff(vec o,vec p1,vec p2,spec diff,int sh){
 		return new diffSurface(o,vec.sub(p1,o),vec.sub(p2,o),diff,sh);
 	}
-	public nnode gen(point pt,int n){
+	public node gen(point pt,int n){
 		nnode rn=new nnode(n);
 		for(int i=0;i<n;i++){
 			rn.setRay(new ray(pt.pos,vec.normalRand(this.n)),i);
@@ -63,7 +63,7 @@ class refSurface extends surface{
 		
 		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh,ref);
 	}
-	public nnode gen(point pt,int n){
+	public node gen(point pt,int n){
 		double cos1=-vec.dot(this.n,pt.r.d);
 		if(1-(1-Math.pow(this.ref,2))*(1-Math.pow(cos1, 2))>=0){
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
@@ -99,12 +99,31 @@ class mirrSurface extends surface{
 	public mirrSurface newmirr(vec o,vec p1,vec p2,spec sf,int sh){
 		return new mirrSurface(o,vec.sub(p1,o),vec.sub(p2,o),sf,sh);
 	}
-	public nnode gen(point pt,int n){
+	public node gen(point pt,int n){
 		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
 		nnode rn=new nnode(1);
 		rn.setRay(rt,0);
 		rn.setW(this.sf,0);
 		return rn;
+	}
+}
+
+
+class lightSurface extends surface{
+	spec light;
+	public lightSurface(vec p,vec u,vec v,spec l,int sh){
+		this.p=p;
+		this.u=u;
+		this.v=v;
+		this.n=vec.cro(u, v).unit();
+		this.light=l;
+		this.shape=sh;
+	}
+	public lightSurface newlight(vec o,vec p1,vec p2,spec l,int sh){
+		return new lightSurface(o,vec.sub(p1,o),vec.sub(p2,o),l,sh);
+	}
+	public node gen(point pt,int n){
+		return new lnode(this.light);
 	}
 }
 
