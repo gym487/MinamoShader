@@ -1,8 +1,11 @@
 
 public class ray {
 	private vec p,d;//point direction
-	public ray(vec p,vec d){
+//	private node child;
+	public ray(vec p,vec d,spec c){
 		this.p=p;
 		this.d=d;
+		//this.col=c;
 	}
+	
 }
