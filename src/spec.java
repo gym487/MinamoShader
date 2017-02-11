@@ -15,4 +15,7 @@ public class spec {
 	public spec add(spec a){
 		return new spec(this.r+a.r,this.g+a.g,this.b+a.b);
 	}
+	public double tol(){
+		return this.r+this.g+this.b;
+	}
 }

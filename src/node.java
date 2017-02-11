@@ -4,6 +4,10 @@ public abstract class node{
 	public spec val(){
 		return null;
 	}
+	public void fill(surface[] scene,int sam){
+	}
+	public void genn(surface[] scene,int sam,spec w){
+	}
 }
 class nnode extends node {
 	private int rn;//number of rays;
@@ -50,6 +54,20 @@ class nnode extends node {
 				}else{
 					this.childs[i]=new lnode(new spec(0,0,0));
 				}
+			}
+		}
+	}
+	public void genn(surface[] scene,int sam,spec w){
+		if(w.tol()>=0.0001){
+			for(int i=0;i<this.childs.length;i++){
+				this.childs[i].fill(scene,sam);
+			}
+			for(int i=0;i<this.childs.length;i++){
+				this.childs[i].genn(scene,sam,w.mul(this.weights[i]));
+			}
+		}else{
+			for(int i=0;i<this.childs.length;i++){
+				this.childs[i]=new lnode(new spec(0,0,0));
 			}
 		}
 	}
