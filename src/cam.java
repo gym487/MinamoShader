@@ -35,7 +35,7 @@ public class cam {
 	public void shoot2(int xx,int yy){
 			
 				this.filmn[xx][yy].fill();
-				this.filmn[xx][yy].genn(new spec(1,1,1));
+				this.filmn[xx][yy].genn(new spec(1,1,1),1);
 				this.film[xx][yy]=filmn[xx][yy].val();
 				this.filmn[xx][yy]=null;
 	}

@@ -1,6 +1,6 @@
 
 public  class minamo extends Thread {
-	public static int sam=5;
+	public static int sam=3;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -25,7 +25,7 @@ public  class minamo extends Thread {
 		scene[2]=diffSurface.newdiff(new vec(4,-4,16),new vec(4,4,16),new vec(4,-4,1),new spec(0.1,0.1,0.5),1);
 		scene[3]=diffSurface.newdiff(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
 		scene[4]=diffSurface.newdiff(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
-		scene[5]=lightSurface.newlight(new vec(-2,-3.99,12),new vec(2,-3.99,12),new vec(-2,-3.99,8),new spec(1500,1500,1500),1);
+		scene[5]=lightSurface.newlight(new vec(-1,-3.99,12),new vec(1,-3.99,12),new vec(-1,-3.99,8),new spec(1500,1500,1500),1);
 		c.shoot1();
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);

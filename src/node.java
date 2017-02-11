@@ -8,7 +8,7 @@ public abstract class node{
 	}
 	public void fill(){
 	}
-	public void genn(spec w){
+	public void genn(spec w,int times){
 	}
 }
 class nnode extends node {
@@ -60,13 +60,13 @@ class nnode extends node {
 			}
 		}
 	}
-	public void genn(spec w){
-		if(w.tol()>=0.01){
+	public void genn(spec w,int times){
+		if(w.tol()>=0.01){//&& times<10
 			for(int i=0;i<this.childs.length;i++){
 				this.childs[i].fill();
 			}
 			for(int i=0;i<this.childs.length;i++){
-				this.childs[i].genn(w.mul(this.weights[i]));
+				this.childs[i].genn(w.mul(this.weights[i]),times+1);
 			}
 		}else{
 			for(int i=0;i<this.childs.length;i++){
