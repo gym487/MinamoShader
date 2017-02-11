@@ -1,6 +1,6 @@
 
 public abstract class surface {
-	 
+	 int shape;//0=tri 1=squ
 	 vec p,u,v,n;//point u v normal;
 	 public node gen(ray r,int sam){
 		 return null;
@@ -40,5 +40,12 @@ class mirrSurface extends surface{
 		this.n=vec.cro(u, v);
 		this.sf=f;
 	}
+	
+}
+
+class point{
+	surface surf;
+	vec pos;
+	double u,v,l;
 	
 }

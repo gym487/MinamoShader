@@ -27,7 +27,7 @@ public  class vec {
 	public static vec cro(vec a,vec b){
 		return new vec(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.y,a.x*b.y-a.y*b.x);
 	}
-	public vec mul(int a){
+	public vec mul(double a){
 		return new vec(this.x*a,this.y*a,this.z*a);
 	}
 	public static vec randvec(){

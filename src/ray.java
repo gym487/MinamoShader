@@ -1,6 +1,6 @@
 
 public class ray {
-	private vec p,d;//point direction
+	 vec p,d;//point direction
 //	private node child;
 	public ray(vec p,vec d,spec c){
 		this.p=p;
