@@ -2,7 +2,7 @@
 public abstract class surface {
 	 int shape;//0=tri 1=squ
 	 vec p,u,v,n;//point u v normal;
-	 public node gen(ray r,int sam){
+	 public nnode gen(point pt,int n){
 		 return null;
 	 }
 	 public point check(ray r){
@@ -28,7 +28,7 @@ class diffSurface extends surface{
 		this.p=p;
 		this.u=u;
 		this.v=v;
-		this.n=vec.cro(u, v);
+		this.n=vec.cro(u, v).unit();
 		this.sd=diff;
 		this.shape=sh;
 	}
@@ -49,18 +49,40 @@ class diffSurface extends surface{
 class refSurface extends surface{
 	spec sf,st;
 	double ref;
-	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh){
+	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh,double ref){
 		this.p=p;
 		this.u=u;
 		this.v=v;
-		this.n=vec.cro(u, v);
+		this.n=vec.cro(u, v).unit();
 		this.sf=f;
 		this.st=t;
 		this.shape=sh;
+		this.ref=ref;
 	}
-	public refSurface newref(vec o,vec p1,vec p2,spec f,spec t,int sh){
+	public refSurface newref(vec o,vec p1,vec p2,spec f,spec t,int sh,double ref){
 		
-		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh);
+		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh,ref);
+	}
+	public nnode gen(point pt,int n){
+		double cos1=-vec.dot(this.n,pt.r.d);
+		if(1-(1-Math.pow(this.ref,2))*(1-Math.pow(cos1, 2))>=0){
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
+				nnode rn=new nnode(2);
+				rn.setRay(rt,0);
+				rn.setW(this.sf,0);
+				double cos2=Math.sqrt(1-(1/Math.pow(ref,2))*(1-Math.pow(cos1,2)) );
+				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/ref),this.n.mul(cos1/ref-cos2)));
+				rn.setRay(tt,1);
+				rn.setW(this.st,1);
+				return rn;
+			
+		}else{
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
+				nnode rn=new nnode(1);
+				rn.setRay(rt,0);
+				rn.setW(this.sf,0);
+				return rn;
+		}
 	}
 }
 
@@ -70,12 +92,19 @@ class mirrSurface extends surface{
 		this.p=p;
 		this.u=u;
 		this.v=v;
-		this.n=vec.cro(u, v);
+		this.n=vec.cro(u, v).unit();
 		this.sf=f;
 		this.shape=sh;
 	}
 	public mirrSurface newmirr(vec o,vec p1,vec p2,spec sf,int sh){
 		return new mirrSurface(o,vec.sub(p1,o),vec.sub(p2,o),sf,sh);
+	}
+	public nnode gen(point pt,int n){
+		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
+		nnode rn=new nnode(1);
+		rn.setRay(rt,0);
+		rn.setW(this.sf,0);
+		return rn;
 	}
 }
 

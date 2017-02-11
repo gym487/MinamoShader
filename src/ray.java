@@ -4,7 +4,7 @@ public class ray {
 //	private node child;
 	public ray(vec p,vec d){
 		this.p=p;
-		this.d=d;
+		this.d=d.unit();
 		//this.col=c;
 	}
 	
