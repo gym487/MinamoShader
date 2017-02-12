@@ -20,7 +20,8 @@ public  class minamo extends Thread {
 		threadn=4;
 		thok=new int[threadn];
 		threads=new thread[threadn];
-		scene[2]=mirrSurface.newmirr(new vec(-3,-4,16),new vec(-4,4,16),new vec(4,-4,16),new spec(0.6,0.6,0.6),1);
+		scene[2]=mirrSurface.newmirr(new vec(-4,-4,12),new vec(-4,4,12),new vec(0,-4,17),new spec(0.6,0.6,0.6),1);
+		//scene[2]=mirrSurface.newmirr(new vec(-4,-4,12.001),new vec(0,-4,17.001),new vec(-4,4,12.001),new spec(0.6,0.6,0.6),1);
 		scene[0]=diffSurface.newdiff(new vec(40,4,160),new vec(-40,4,160),new vec(40,4,1),new spec(0.1,0.5,0.1),1);
 		scene[1]=lightSurface.newlight(new vec(4,-4,16),new vec(4,4,16),new vec(4,-4,10),new spec(1000,1000,1000),1);
 		//scene[1]=lightSurface.newlight(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,10),new spec(1000,1000,1000),1);

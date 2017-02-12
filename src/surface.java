@@ -10,7 +10,7 @@ public abstract class surface {
 		 vec t=vec.sub(r.p,this.p);
 		 double h=1/vec.dot(vec.cro(r.d,this.v),this.u);
 		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
-		 if(rt>=0&&vec.dot(r.d, this.n)<0){
+		 if(rt>0.0001){//&&vec.dot(r.d, this.n)<0  direction check
 			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
 			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
 			 if(ru>=0&&rv>=0&&((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1))){
