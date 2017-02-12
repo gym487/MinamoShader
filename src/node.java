@@ -61,7 +61,7 @@ class nnode extends node {
 		}
 	}
 	public void genn(spec w,int times){
-		if(w.tol()>=0.01){//&& times<10
+		if(w.tol()>=0.001){//&& times<10
 			for(int i=0;i<this.childs.length;i++){
 				this.childs[i].fill();
 			}

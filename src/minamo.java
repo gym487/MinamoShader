@@ -1,6 +1,6 @@
 
 public  class minamo extends Thread {
-	public static int sam=3;
+	public static int sam=10;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -16,16 +16,16 @@ public  class minamo extends Thread {
 	}
 	public  static void main(String arg[]){
 		cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
-		scene=new surface[6];
+		scene=new surface[3];
 		threadn=4;
 		thok=new int[threadn];
 		threads=new thread[threadn];
-		scene[0]=diffSurface.newdiff(new vec(-4,-4,16),new vec(-4,4,16),new vec(4,-4,16),new spec(0.5,0.1,0.1),1);
-		scene[1]=diffSurface.newdiff(new vec(4,4,16),new vec(-4,4,16),new vec(4,4,1),new spec(0.1,0.5,0.1),1);
-		scene[2]=diffSurface.newdiff(new vec(4,-4,16),new vec(4,4,16),new vec(4,-4,1),new spec(0.1,0.1,0.5),1);
-		scene[3]=diffSurface.newdiff(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
-		scene[4]=diffSurface.newdiff(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
-		scene[5]=lightSurface.newlight(new vec(-1,-3.99,12),new vec(1,-3.99,12),new vec(-1,-3.99,8),new spec(1500,1500,1500),1);
+		scene[2]=mirrSurface.newmirr(new vec(-3,-4,16),new vec(-4,4,16),new vec(4,-4,16),new spec(0.6,0.6,0.6),1);
+		scene[0]=diffSurface.newdiff(new vec(40,4,160),new vec(-40,4,160),new vec(40,4,1),new spec(0.1,0.5,0.1),1);
+		scene[1]=lightSurface.newlight(new vec(4,-4,16),new vec(4,4,16),new vec(4,-4,10),new spec(1000,1000,1000),1);
+		//scene[1]=lightSurface.newlight(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,10),new spec(1000,1000,1000),1);
+		//scene[2]=mirrSurface.newmirr(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
+		//scene[1]=lightSurface.newlight(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1000,1000,1000),1);
 		c.shoot1();
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);
