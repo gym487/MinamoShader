@@ -123,7 +123,10 @@ class lightSurface extends surface{
 		return new lightSurface(o,vec.sub(p1,o),vec.sub(p2,o),l,sh);
 	}
 	public node gen(point pt){
-		return new lnode(this.light);
+		if(vec.dot(pt.r.d,this.n)<0)
+			return new lnode(this.light);
+		else
+			return new lnode(new spec(0,0,0));
 	}
 }
 
