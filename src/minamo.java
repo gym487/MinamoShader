@@ -1,6 +1,6 @@
 
 public  class minamo extends Thread {
-	public static int sam=10;
+	public static int sam=25;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
