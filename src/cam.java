@@ -54,6 +54,7 @@ public class cam {
             out.write("255\n");
     		for(int yy=0;yy<this.y;yy++){
     			for(int xx=0;xx<this.x;xx++){
+    				this.film[xx][yy].limit(255);
     				out.write(String.valueOf(Math.round(this.film[xx][yy].r))+" "+String.valueOf(Math.round(this.film[xx][yy].g))+" "+String.valueOf(Math.round(this.film[xx][yy].b))+" ");
     			} 
     			out.write("\n");

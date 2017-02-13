@@ -18,4 +18,18 @@ public class spec {
 	public double tol(){
 		return this.r+this.g+this.b;
 	}
+	public void limit(double l){
+		if(this.r>l)
+			this.r=l;
+		if(this.r<0)
+			this.r=0;
+		if(this.b>l)
+			this.b=l;
+		if(this.b<0)
+			this.b=0;
+		if(this.g>l)
+			this.g=l;
+		if(this.g<0)
+			this.g=0;
+	}
 }
