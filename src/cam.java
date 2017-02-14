@@ -21,9 +21,8 @@ public class cam {
 		this.dy=dy.unit();
 		this.dx=vec.cro(this.dy, this.d).unit();
 	}
-	public void shoot1(){
-		for(int xx=0;xx<this.x;xx++){
-			for(int yy=0;yy<this.y;yy++){
+	public void shoot1(int xx,int yy){
+
 				nnode nn=new nnode(minamo.psam);
 				for(int i=0;i<minamo.psam;i++){
 					ray r=new ray(this.pos,vec.add(this.d,vec.add(this.dx.mul((xx+(Math.random()-0.5)-((double)this.x/2))/(double)this.x), this.dy.mul((yy+(Math.random()-0.5)-(double)(this.y/2))/(double)this.y))));
@@ -31,8 +30,6 @@ public class cam {
 					nn.setW(new spec(1,1,1).mul(1.0/minamo.psam),i);
 				}
 				this.filmn[xx][yy]=nn;
-			}
-		}
 	}
 	public void shoot2(int xx,int yy){
 			
