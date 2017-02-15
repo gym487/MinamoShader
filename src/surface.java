@@ -21,7 +21,7 @@ abstract class plain extends surface{
 		 vec t=vec.sub(r.p,this.p);
 		 double h=1/vec.dot(vec.cro(r.d,this.v),this.u);
 		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
-		 if(rt>0.0001){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
+		 if(rt>0){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
 			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
 			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
 			 if(ru>=0&&rv>=0&&((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1))){
@@ -39,19 +39,70 @@ abstract class sphere extends surface{
 	double r;//radius
 	public point check(ray r){
 		vec v=vec.sub(r.p,this.c);
-		if(Math.pow(2*vec.dot(r.d,v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
+		if(Math.pow(vec.dot(r.d.mul(2),v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
 			return null;
 		else{
 			double t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
 			vec pos=vec.add(r.p,r.d.mul(t));
-			return new point(pos,0,0,t,this,r);
+			if(t>0){
+				return new point(pos,0,0,t,this,r);
+			}else{
+				return null;
+			}
 		}
 	}
 	public vec getn(vec pos){
 		return vec.sub(pos,this.c);
 	}
-	
 }
+class refsphere extends sphere{
+	double ref;
+	spec sf,st;
+	public refsphere(vec c,spec f,spec t,double ref){
+		this.c=c;
+		this.sf=f;
+		this.st=t;
+		this.ref=ref;
+	}
+	public node gen(point pt){
+		double cos1=-vec.dot(this.getn(pt.pos),pt.r.d);
+		if(1-(1-Math.pow(this.ref,2))*(1-Math.pow(cos1, 2))>=0){
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
+				nnode rn=new nnode(2);
+				rn.setRay(rt,0);
+				rn.setW(this.sf,0);
+				double cos2=Math.sqrt(1-(1/Math.pow(ref,2))*(1-Math.pow(cos1,2)) );
+				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/ref),this.getn(pt.pos).mul(cos1/ref-cos2)));
+				rn.setRay(tt,1);
+				rn.setW(this.st,1);
+				return rn;
+		}else{
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
+				nnode rn=new nnode(1);
+				rn.setRay(rt,0);
+				rn.setW(this.sf.add(this.st),0);
+				return rn;
+		}
+}
+}
+
+class mirrsphere extends sphere{
+	spec sf;
+	public mirrsphere(vec c,double r,spec f){
+		this.c=c;
+		this.sf=f;
+		this.r=r;
+	}
+	public node gen(point pt){
+		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
+		nnode rn=new nnode(1);
+		rn.setRay(rt,0);
+		rn.setW(this.sf,0);
+		return rn;
+	}
+}
+
+
 class diffSurface extends plain{
 	spec sd;
 	public diffSurface(vec p,vec u,vec v,spec diff,int sh){
@@ -73,8 +124,9 @@ class diffSurface extends plain{
 		}
 		return rn;
 	}
-	
 }
+
+
 
 class refSurface extends plain{
 	spec sf,st;
