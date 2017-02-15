@@ -1,10 +1,21 @@
 
 public abstract class surface {
+	 public node gen(point pt){
+		 return null;
+	 }
+	 
+	 public point check(ray r){
+		 return null;
+	 }
+}
+
+abstract class plain extends surface{
 	 int shape;//0=tri 1=squ
 	 vec p,u,v,n;//point u v normal;
 	 public node gen(point pt){
 		 return null;
 	 }
+	 
 	 public point check(ray r){
 		 
 		 vec t=vec.sub(r.p,this.p);
@@ -20,9 +31,28 @@ public abstract class surface {
 		 }
 		 return null;
 	 }
+	
 }
 
-class diffSurface extends surface{
+abstract class sphere extends surface{
+	vec c;//center
+	double r;//radius
+	public point check(ray r){
+		vec v=vec.sub(r.p,this.c);
+		if(Math.pow(2*vec.dot(r.d,v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
+			return null;
+		else{
+			double t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
+			vec pos=vec.add(r.p,r.d.mul(t));
+			return new point(pos,0,0,t,this,r);
+		}
+	}
+	public vec getn(vec pos){
+		return vec.sub(pos,this.c);
+	}
+	
+}
+class diffSurface extends plain{
 	spec sd;
 	public diffSurface(vec p,vec u,vec v,spec diff,int sh){
 		this.p=p;
@@ -46,7 +76,7 @@ class diffSurface extends surface{
 	
 }
 
-class refSurface extends surface{
+class refSurface extends plain{
 	spec sf,st;
 	double ref;
 	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh,double ref){
@@ -86,7 +116,7 @@ class refSurface extends surface{
 	}
 }
 
-class mirrSurface extends surface{
+class mirrSurface extends plain{
 	spec sf;
 	public mirrSurface(vec p,vec u,vec v,spec f,int sh){
 		this.p=p;
@@ -109,7 +139,7 @@ class mirrSurface extends surface{
 }
 
 
-class lightSurface extends surface{
+class lightSurface extends plain{
 	spec light;
 	public lightSurface(vec p,vec u,vec v,spec l,int sh){
 		this.p=p;
