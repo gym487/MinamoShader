@@ -54,7 +54,7 @@ abstract class sphere extends surface{
 		}
 	}
 	public vec getn(vec pos){
-		return vec.sub(pos,this.c);
+		return vec.sub(pos,this.c).unit();
 	}
 }
 class refsphere extends sphere{
