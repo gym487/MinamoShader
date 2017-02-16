@@ -28,7 +28,7 @@ public  class minamo extends Thread {
 		scene[3]=diffSurface.newdiff(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
 		scene[4]=diffSurface.newdiff(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
 		scene[5]=lightSurface.newlight(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1500,1500,1500),1);
-		scene[6]=new refsphere(new vec(2,2,14),1.8,new spec(0,0,0),new spec(0.9,0.9,0.9),1.5);
+		scene[6]=new refsphere(new vec(2,3.1,14),0.9,new spec(0,0,0),new spec(0.9,0.9,0.9),1.5);
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);
 			threads[i].start();

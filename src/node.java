@@ -61,7 +61,7 @@ class nnode extends node {
 		}
 	}
 	public void genn(spec w,int times){
-		if(times<10){//&& times<10  or w.tol()>0.001 or w.tol>1/minamo.psam
+		if(times<8){//&& times<10  or w.tol()>0.001 or w.tol>1/minamo.psam
 			for(int i=0;i<this.childs.length;i++){
 				this.childs[i].fill();
 			}

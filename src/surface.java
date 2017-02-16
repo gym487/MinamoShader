@@ -43,8 +43,9 @@ abstract class sphere extends surface{
 			return null;
 		else{
 			double t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
-			if(t<0)
+			if(t<0.00001){
 				t=-vec.dot(r.d, v)+Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
+			}
 			vec pos=vec.add(r.p,r.d.mul(t));
 			if(t>0.00001){
 				return new point(pos,0,0,t,this,r);
@@ -68,19 +69,27 @@ class refsphere extends sphere{
 		this.r=r;
 	}
 	public node gen(point pt){
-		double cos1=-vec.dot(this.getn(pt.pos),pt.r.d);
-		if(1-(1/Math.pow(this.ref,2))*(1-Math.pow(cos1, 2))>=0){
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
+
+		double reff;
+		vec n=this.getn(pt.pos);
+		reff=this.ref;
+		if(vec.dot(pt.r.d,this.getn(pt.pos))>0){
+			reff=1/reff;
+			n=n.opp();
+		}
+		double cos1=-vec.dot(n,pt.r.d);
+		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
-				rn.setRay(rt,0);
-				rn.setW(this.sf,0);
-				double cos2=Math.sqrt(1-(1/Math.pow(ref,2))*(1-Math.pow(cos1,2)) );
-				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/this.ref),this.getn(pt.pos).mul(cos1/this.ref-cos2)));
-				rn.setRay(tt,1);
-				rn.setW(this.st,1);
+				rn.setRay(rt,1);
+				rn.setW(this.sf,1);
+				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
+				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
+				rn.setRay(tt,0);
+				rn.setW(this.st,0);
 				return rn;
 		}else{
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(1);
 				rn.setRay(rt,0);
 				rn.setW(this.sf.add(this.st),0);
