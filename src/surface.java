@@ -42,12 +42,14 @@ abstract class sphere extends surface{
 		if(Math.pow(vec.dot(r.d.mul(2),v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
 			return null;
 		else{
-			double t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
-			if(t<0.00001){
+			double t;
+			if(v.mod()-this.r>0.00001){
+				t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
+			}else{
 				t=-vec.dot(r.d, v)+Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
 			}
-			vec pos=vec.add(r.p,r.d.mul(t));
 			if(t>0.00001){
+				vec pos=vec.add(r.p,r.d.mul(t));
 				return new point(pos,0,0,t,this,r);
 			}else{
 				return null;
@@ -140,7 +142,7 @@ class diffSurface extends plain{
 
 
 
-class refSurface extends plain{
+class refSurface extends plain{//FIXME: As the ref sphere. 
 	spec sf,st;
 	double ref;
 	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh,double ref){

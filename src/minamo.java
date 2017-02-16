@@ -1,7 +1,7 @@
 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=10;
+	public static int psam=100;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -18,7 +18,7 @@ public  class minamo extends Thread {
 	public  static void main(String arg[]){//Test scene below
 		//TODO: Read scene from text file.
 		cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
-		scene=new surface[7];
+		scene=new surface[8];
 		threadn=4;
 		thok=new int[threadn];
 		threads=new thread[threadn];
@@ -28,7 +28,8 @@ public  class minamo extends Thread {
 		scene[3]=diffSurface.newdiff(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
 		scene[4]=diffSurface.newdiff(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
 		scene[5]=lightSurface.newlight(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1500,1500,1500),1);
-		scene[6]=new refsphere(new vec(2,3.1,14),0.9,new spec(0,0,0),new spec(0.9,0.9,0.9),1.5);
+		scene[6]=new refsphere(new vec(2,2.5,13),1.5,new spec(0,0,0),new spec(0.9,0.9,0.9),1.5);
+		scene[7]=new mirrsphere(new vec(-2,2.5,12),1.5,new spec(0.9,0.9,0.9));
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);
 			threads[i].start();
