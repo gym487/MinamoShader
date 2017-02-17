@@ -4,9 +4,9 @@ A simple shader based on path-tracing.
 
 Edit src/minamo.java to change the scene and settings.
 
-[Mirror]./docs/mirror.jpg
+[Mirror]:./docs/mirror.jpg
 
-[CornellBox]./docs/cornell.jpg
+[CornellBox]:./docs/cornell.jpg
 
 Run:
 
