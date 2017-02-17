@@ -142,7 +142,7 @@ class diffSurface extends plain{
 
 
 
-class refSurface extends plain{//FIXME: As the ref sphere. 
+class refSurface extends plain{
 	spec sf,st;
 	double ref;
 	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh,double ref){
@@ -160,20 +160,27 @@ class refSurface extends plain{//FIXME: As the ref sphere.
 		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh,ref);
 	}
 	public node gen(point pt){
-		double cos1=-vec.dot(this.n,pt.r.d);
-		if(1-(1/Math.pow(this.ref,2))*(1-Math.pow(cos1, 2))>=0){
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
+
+		double reff;
+		vec n=this.n;
+		reff=this.ref;
+		if(vec.dot(pt.r.d,this.n)>0){
+			reff=1/reff;
+			n=n.opp();
+		}
+		double cos1=-vec.dot(n,pt.r.d);
+		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
-				rn.setRay(rt,0);
-				rn.setW(this.sf,0);
-				double cos2=Math.sqrt(1-(1/Math.pow(ref,2))*(1-Math.pow(cos1,2)) );
-				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/ref),this.n.mul(cos1/ref-cos2)));
-				rn.setRay(tt,1);
-				rn.setW(this.st,1);
+				rn.setRay(rt,1);
+				rn.setW(this.sf,1);
+				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
+				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
+				rn.setRay(tt,0);
+				rn.setW(this.st,0);
 				return rn;
-			
 		}else{
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(1);
 				rn.setRay(rt,0);
 				rn.setW(this.sf.add(this.st),0);
