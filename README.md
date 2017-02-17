@@ -6,8 +6,8 @@ Edit src/minamo.java to change the scene and settings.
 
 Run:
 
-`
-./comp.sh
-java -jar ./Minamo.jar
-`
+	`
+	./comp.sh
+	java -jar ./Minamo.jar
+	`
 
