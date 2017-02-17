@@ -13,7 +13,8 @@ Run:
 	javac  ./src/* -d ./bin/
 	java -cp ./bin/ minamo
 
-When first time to run:
+First time to run:
+
 	mkdir ./pictures
 	mkdir ./bin
 

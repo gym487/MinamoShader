@@ -23,10 +23,10 @@ abstract class plain extends surface{
 		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
 		 if(rt>0.00001){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
 			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
-			 if(ru<0.00001||ru>1)
+			 if(ru<0||ru>1)
 				 return null;
 			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
-			 if(rv<0.00001||rv>1)
+			 if(rv<0||rv>1)
 				 return null;
 			 if((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1)){
 				 vec pos=vec.add(r.p,r.d.mul(rt));
