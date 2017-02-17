@@ -126,8 +126,8 @@ class diffSurface extends plain{
 	public diffSurface(vec p,vec p1,vec p2,spec diff,int sh){
 		this.p=p;
 		this.u=vec.sub(p1,p);
-		this.v=vec.sub(p2, p);
-		this.n=vec.cro(u, v).unit();
+		this.v=vec.sub(p2,p);
+		this.n=vec.cro(this.u,this.v).unit();
 		this.sd=diff;
 		this.shape=sh;
 	}
@@ -151,7 +151,7 @@ class refSurface extends plain{
 		this.p=p;
 		this.u=vec.sub(p1,p);
 		this.v=vec.sub(p2, p);
-		this.n=vec.cro(u, v).unit();
+		this.n=vec.cro(this.u,this.v).unit();
 		this.sf=f;
 		this.st=t;
 		this.shape=sh;
@@ -194,7 +194,7 @@ class mirrSurface extends plain{
 		this.p=p;
 		this.u=vec.sub(p1,p);
 		this.v=vec.sub(p2, p);
-		this.n=vec.cro(u, v).unit();
+		this.n=vec.cro(this.u,this. v).unit();
 		this.sf=f;
 		this.shape=sh;
 	}
@@ -211,17 +211,15 @@ class mirrSurface extends plain{
 
 class lightSurface extends plain{
 	spec light;
-	public lightSurface(vec p,vec u,vec v,spec l,int sh){
+	public lightSurface(vec p,vec p1,vec p2,spec l,int sh){
 		this.p=p;
-		this.u=u;
-		this.v=v;
-		this.n=vec.cro(u, v).unit();
+		this.u=vec.sub(p1,p);;
+		this.v=vec.sub(p2,p);;
+		this.n=vec.cro(this.u, this.v).unit();
 		this.light=l;
 		this.shape=sh;
 	}
-	public static lightSurface newlight(vec o,vec p1,vec p2,spec l,int sh){
-		return new lightSurface(o,vec.sub(p1,o),vec.sub(p2,o),l,sh);
-	}
+
 	public node gen(point pt){
 		if(vec.dot(pt.r.d,this.n)<0)
 			return new lnode(this.light);

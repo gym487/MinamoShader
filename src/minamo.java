@@ -1,7 +1,7 @@
 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=100;
+	public static int psam=10;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
