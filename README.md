@@ -10,6 +10,11 @@ Edit src/minamo.java to change the scene and settings.
 
 Run:
 
-	./comp.sh
-	java -jar ./Minamo.jar
+	javac  ./src/* -d ./bin/
+	java -cp ./bin/ minamo
+
+When first time to run:
+	mkdir ./pictures
+	mkdir ./bin
+
 

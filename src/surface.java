@@ -23,8 +23,12 @@ abstract class plain extends surface{
 		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
 		 if(rt>0.00001){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
 			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
+			 if(ru<0.00001||ru>1)
+				 return null;
 			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
-			 if(ru>=0&&rv>=0&&((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1))){
+			 if(rv<0.00001||rv>1)
+				 return null;
+			 if((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1)){
 				 vec pos=vec.add(r.p,r.d.mul(rt));
 				 return new point(pos,ru,rv,rt,this,r);
 			 }
@@ -119,17 +123,15 @@ class mirrsphere extends sphere{
 
 class diffSurface extends plain{
 	spec sd;
-	public diffSurface(vec p,vec u,vec v,spec diff,int sh){
+	public diffSurface(vec p,vec p1,vec p2,spec diff,int sh){
 		this.p=p;
-		this.u=u;
-		this.v=v;
+		this.u=vec.sub(p1,p);
+		this.v=vec.sub(p2, p);
 		this.n=vec.cro(u, v).unit();
 		this.sd=diff;
 		this.shape=sh;
 	}
-	public static diffSurface newdiff(vec o,vec p1,vec p2,spec diff,int sh){
-		return new diffSurface(o,vec.sub(p1,o),vec.sub(p2,o),diff,sh);
-	}
+
 	public node gen(point pt){
 		nnode rn=new nnode(minamo.sam);
 		for(int i=0;i<minamo.sam;i++){
@@ -145,20 +147,17 @@ class diffSurface extends plain{
 class refSurface extends plain{
 	spec sf,st;
 	double ref;
-	public refSurface(vec p,vec u,vec v,spec f,spec t,int sh,double ref){
+	public refSurface(vec p,vec p1,vec p2,spec f,spec t,int sh,double ref){
 		this.p=p;
-		this.u=u;
-		this.v=v;
+		this.u=vec.sub(p1,p);
+		this.v=vec.sub(p2, p);
 		this.n=vec.cro(u, v).unit();
 		this.sf=f;
 		this.st=t;
 		this.shape=sh;
 		this.ref=ref;
 	}
-	public static refSurface newref(vec o,vec p1,vec p2,spec f,spec t,int sh,double ref){
-		
-		return new refSurface(o,vec.sub(p1,o),vec.sub(p2,o),f,t,sh,ref);
-	}
+
 	public node gen(point pt){
 
 		double reff;
@@ -191,17 +190,15 @@ class refSurface extends plain{
 
 class mirrSurface extends plain{
 	spec sf;
-	public mirrSurface(vec p,vec u,vec v,spec f,int sh){
+	public mirrSurface(vec p,vec p1,vec p2,spec f,int sh){
 		this.p=p;
-		this.u=u;
-		this.v=v;
+		this.u=vec.sub(p1,p);
+		this.v=vec.sub(p2, p);
 		this.n=vec.cro(u, v).unit();
 		this.sf=f;
 		this.shape=sh;
 	}
-	public static mirrSurface newmirr(vec o,vec p1,vec p2,spec sf,int sh){
-		return new mirrSurface(o,vec.sub(p1,o),vec.sub(p2,o),sf,sh);
-	}
+
 	public node gen(point pt){
 		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
 		nnode rn=new nnode(1);
