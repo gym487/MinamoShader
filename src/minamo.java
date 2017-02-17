@@ -18,7 +18,7 @@ public  class minamo extends Thread {
 	public  static void main(String arg[]){//Test scene below
 		//TODO: Load scene from text file.
 		cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
-		scene=new surface[7];
+		scene=new surface[8];
 		threadn=4;
 		thok=new int[threadn];
 		threads=new thread[threadn];
