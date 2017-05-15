@@ -84,7 +84,7 @@ class refsphere extends sphere{
 			n=n.opp();
 		}
 		double cos1=-vec.dot(n,pt.r.d);
-		//if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
+		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
 				rn.setRay(rt,1);
@@ -96,15 +96,15 @@ class refsphere extends sphere{
 				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
 				rn.setRay(tt,0);
 				rn.setW(this.sf.mul(wr),1);
-				rn.setW(this.st.mul(wt),0);
+				rn.setW(this.sf.mul(wt),0);
 				return rn;
-	/*	}else{
+		}else{
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(1);
 				rn.setRay(rt,0);
-				rn.setW(this.sf.add(this.st),0);
+				rn.setW(this.sf,0);
 				return rn;
-		}*/
+		}
 }
 }
 
@@ -172,7 +172,7 @@ class refSurface extends plain{
 			n=n.opp();
 		}
 		double cos1=-vec.dot(n,pt.r.d);
-		//if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
+		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
 				rn.setRay(rt,1);
@@ -184,15 +184,15 @@ class refSurface extends plain{
 				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
 				rn.setRay(tt,0);
 				rn.setW(this.sf.mul(wr),1);
-				rn.setW(this.st.mul(wt),0);
+				rn.setW(this.sf.mul(wt),0);
 				return rn;
-	/*	}else{
+		}else{
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(1);
 				rn.setRay(rt,0);
-				rn.setW(this.sf.add(this.st),0);
+				rn.setW(this.sf,0);
 				return rn;
-		}*/
+		}
 	}
 }
 

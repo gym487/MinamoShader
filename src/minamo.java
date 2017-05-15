@@ -28,7 +28,7 @@ public  class minamo extends Thread {
 		scene[3]=new diffSurface(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
 		scene[4]=new diffSurface(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
 		scene[5]=new lightSurface(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1500,1500,1500),1);
-		scene[6]=new refsphere(new vec(2,2.5,13),1.5,new spec(1,1,1),new spec(1,1,1),1.5);
+		scene[6]=new refsphere(new vec(2,2.5,13),1.5,new spec(0.9,0.9,0.9),new spec(0.9,0.9,0.9),1.5);
 		scene[7]=new mirrsphere(new vec(-2,2.5,12),1.5,new spec(0.9,0.9,0.9));
 		//scene[6]=new refSurface(new vec(-2,-2,10),new vec(-2,2,10),new vec(2,-2,10),new spec(0.05,0.05,0.05),new spec(0.9,0.9,0.9),1,1.5);
 		for(int i=0;i<threadn;i++){
