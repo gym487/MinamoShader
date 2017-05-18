@@ -1,4 +1,4 @@
-
+import java.util.Arrays; 
 public  class minamo extends Thread {
 	public static int sam=1;
 	public static int psam=100;
@@ -8,9 +8,11 @@ public  class minamo extends Thread {
 	static surface scene[];
 	public static boolean nok(){
 		 int flag=1;
-		 for(int i=0;i<minamo.threadn;i++){
-			 if(minamo.thok[i]==0)
+		 for(int i=0;i<minamo.thok.length;i++){
+			 if(minamo.thok[i]!=-2){
 				 flag=0;
+				 break;
+			 }
 		 }
 		 if(flag==1) return false;
 		 else return true;
@@ -20,7 +22,8 @@ public  class minamo extends Thread {
 		cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
 		scene=new surface[8];
 		threadn=4;
-		thok=new int[threadn];
+		thok=new int[c.x];
+		Arrays.fill(thok,-1);
 		threads=new thread[threadn];
 		scene[0]=new diffSurface(new vec(-4,-4,16),new vec(-4,4,16),new vec(4,-4,16),new spec(0.5,0.1,0.1),1);
 		scene[1]=new diffSurface(new vec(4,4,16),new vec(-4,4,16),new vec(4,4,1),new spec(0.1,0.5,0.1),1);
@@ -28,9 +31,10 @@ public  class minamo extends Thread {
 		scene[3]=new diffSurface(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
 		scene[4]=new diffSurface(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
 		scene[5]=new lightSurface(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1500,1500,1500),1);
-		scene[6]=new refsphere(new vec(2,2.5,13),1.5,new spec(0.9,0.9,0.9),new spec(0.9,0.9,0.9),1.5);
+		scene[6]=new refsphere(new vec(2,2.5,12),1.5,new spec(0.9,0.9,0.9),1.5);
 		scene[7]=new mirrsphere(new vec(-2,2.5,12),1.5,new spec(0.9,0.9,0.9));
 		//scene[6]=new refSurface(new vec(-2,-2,10),new vec(-2,2,10),new vec(2,-2,10),new spec(0.05,0.05,0.05),new spec(0.9,0.9,0.9),1,1.5);
+		
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);
 			threads[i].start();

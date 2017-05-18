@@ -67,10 +67,9 @@ abstract class sphere extends surface{
 class refsphere extends sphere{
 	double ref;
 	spec sf,st;
-	public refsphere(vec c,double r,spec f,spec t,double ref){
+	public refsphere(vec c,double r,spec f,double ref){
 		this.c=c;
 		this.sf=f;
-		this.st=t;
 		this.ref=ref;
 		this.r=r;
 	}
@@ -151,13 +150,12 @@ class diffSurface extends plain{
 class refSurface extends plain{
 	spec sf,st;
 	double ref;
-	public refSurface(vec p,vec p1,vec p2,spec f,spec t,int sh,double ref){
+	public refSurface(vec p,vec p1,vec p2,spec f,int sh,double ref){
 		this.p=p;
 		this.u=vec.sub(p1,p);
 		this.v=vec.sub(p2, p);
 		this.n=vec.cro(this.u,this.v).unit();
 		this.sf=f;
-		this.st=t;
 		this.shape=sh;
 		this.ref=ref;
 	}

@@ -7,13 +7,17 @@ public class thread extends Thread{
 		 this.c=c;
 	 }
 	 public void run(){
-		 for(int i=this.num*this.c.x/minamo.threadn;i<(this.num+1)*this.c.x/minamo.threadn;i++){
-			 System.out.println(String.valueOf(i-this.num*this.c.x/minamo.threadn)+"/"+String.valueOf(this.c.x/minamo.threadn)+"  thread "+String.valueOf(this.num));
-			 for(int j=0;j<this.c.y;j++){
-				 this.c.shoot1(i, j);
-				 this.c.shoot2(i,j);
+		 for(int i=0;i<this.c.x;i++){
+			 if(minamo.thok[i]==-1){
+				 minamo.thok[i]=this.num;
+				 System.out.println("Thread: "+num+", Line: "+i);
+				 for(int j=0;j<this.c.y;j++){
+					 this.c.shoot1(i, j);
+					 this.c.shoot2(i,j);
+				 }
+				 minamo.thok[i]=-2;
 			 }
 		 }
-		 minamo.thok[this.num]=1;
+		
 	 }
 }
