@@ -1,7 +1,7 @@
 import java.util.Arrays; 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=100;
+	public static int psam=1000;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -25,13 +25,13 @@ public  class minamo extends Thread {
 		thok=new int[c.x];
 		Arrays.fill(thok,-1);
 		threads=new thread[threadn];
-		scene[0]=new diffSurface(new vec(-4,-4,16),new vec(-4,4,16),new vec(4,-4,16),new spec(0.5,0.1,0.1),1);
-		scene[1]=new diffSurface(new vec(4,4,16),new vec(-4,4,16),new vec(4,4,1),new spec(0.1,0.5,0.1),1);
-		scene[2]=new diffSurface(new vec(4,-4,16),new vec(4,4,16),new vec(4,-4,1),new spec(0.1,0.1,0.5),1);
-		scene[3]=new diffSurface(new vec(-4,-4,16),new vec(4,-4,16),new vec(-4,-4,1),new spec(0.5,0.5,0.1),1);
-		scene[4]=new diffSurface(new vec(-4,4,16),new vec(-4,-4,16),new vec(-4,4,1),new spec(0.1,0.5,0.5),1);
-		scene[5]=new lightSurface(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(1500,1500,1500),1);
-		scene[6]=new refsphere(new vec(2,2.5,12),1.5,new spec(0.9,0.9,0.9),1.5);
+		scene[0]=new diffSurface(new vec(-6,-4,18),new vec(-6,4,18),new vec(6,-4,18),new spec(0.5,0.1,0.1),1);
+		scene[1]=new diffSurface(new vec(6,4,18),new vec(-6,4,18),new vec(6,4,1),new spec(0.1,0.5,0.1),1);
+		scene[2]=new diffSurface(new vec(6,-4,18),new vec(6,4,18),new vec(6,-4,1),new spec(0.1,0.1,0.5),1);
+		scene[3]=new diffSurface(new vec(-6,-4,18),new vec(6,-4,18),new vec(-6,-4,1),new spec(0.5,0.5,0.1),1);
+		scene[4]=new diffSurface(new vec(-6,4,18),new vec(-6,-4,18),new vec(-6,4,1),new spec(0.1,0.5,0.5),1);
+		scene[5]=new lightSurface(new vec(-3,-3.99,12),new vec(3,-3.99,12),new vec(-3,-3.99,8),new spec(30000,30000,30000),1);
+		scene[6]=new refsphere(new vec(2,2.5,10),1.5,new spec(0.9,0.9,0.9),1.5);
 		scene[7]=new mirrsphere(new vec(-2,2.5,12),1.5,new spec(0.9,0.9,0.9));
 		//scene[6]=new refSurface(new vec(-2,-2,10),new vec(-2,2,10),new vec(2,-2,10),new spec(0.05,0.05,0.05),new spec(0.9,0.9,0.9),1,1.5);
 		

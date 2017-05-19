@@ -32,4 +32,10 @@ public class spec {
 		if(this.g<0)
 			this.g=0;
 	}
+	public spec sRGB(){
+		double rr=Math.pow(this.r*25,1.0/2.2);
+		double gg=Math.pow(this.g*25,1.0/2.2);
+		double bb=Math.pow(this.b*25,1.0/2.2);
+		return new spec(rr,gg,bb);
+	}
 }
