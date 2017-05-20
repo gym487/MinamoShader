@@ -165,7 +165,7 @@ class diffSurface extends plain{
 
 
 class refSurface extends plain{
-	spec sf,st;
+	spec sf;
 	double ref;
 	public refSurface(vec p,vec p1,vec p2,spec f,int sh,double ref){
 		this.p=p;
@@ -251,11 +251,69 @@ class lightSurface extends plain{
 	}
 }
 
+
+
+
+
+class water extends surface{
+	public surface[] surfs;
+	int xs,ys;
+	double lx,ly;
+	vec posstart;
+	public water(vec p,double lx,double ly,int xs,int ys){
+		this.posstart=p;
+		this.lx=lx;
+		this.ly=ly;
+		this.xs=xs;
+		this.ys=ys;
+		
+		this.surfs=new surface[xs*ys*2];
+		System.out.println(xs+","+ys+","+xs*ys*2);
+		vec[][] poss=new vec[xs+1][ys+1];
+		double h[][]=new double[xs+1][ys+1];
+		double dx=lx/xs;
+		double dy=ly/ys;
+		for(int i=0;i<=xs;i++){
+			for(int j=0;j<=ys;j++){
+				h[i][j]=Math.sin(2*i*dx+3*j*dy)*0.12+Math.sin(i*dx-j*dy+0.5)*0.1;
+			}
+		}
+		for(int i=0;i<=xs;i++){
+			for(int j=0;j<=ys;j++){
+				poss[i][j]=vec.add(this.posstart,new vec(i*dx,h[i][j],j*dy));
+			}
+		}
+		for(int i=0;i<xs;i++){
+			for(int j=0;j<ys;j++){
+				this.surfs[(i*ys+j)*2]=new refSurface(poss[i][j],poss[i+1][j],poss[i][j+1],new spec(0.9,0.9,0.9),0,1.3);
+				this.surfs[(i*ys+j)*2+1]=new refSurface(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],new spec(0.7,0.7,0.9),0,1.3);
+			}
+		}
+		
+	}
+	public point check(ray r){
+		point n=null;
+		double dist=1000000000;
+		for(int i=0;i<this.surfs.length;i++){
+				point nn=this.surfs[i].check(r);
+			
+			 if(nn!=null&&nn.t<dist){
+				n=nn;
+			}
+		}
+		return n;
+	}
+	public node gen(point pt){
+		return this.surfs[pt.num].gen(pt);
+	}
+}
+
 class point{
 	surface surf;
 	vec pos;
 	ray r;
 	double u,v,t;
+	int num;//for water
 	 point(vec pos,double u,double v,double t,surface surf,ray r){
 		 this.pos=pos;
 		 this.surf=surf;
