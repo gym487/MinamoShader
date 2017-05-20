@@ -1,7 +1,7 @@
 import java.util.Arrays; 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=1000;
+	public static int psam=100;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -19,7 +19,7 @@ public  class minamo extends Thread {
 	}
 	public  static void main(String arg[]){//Test scene below
 		//TODO: Load scene from text file.
-		cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
+		cam c=new cam(new vec(0,0,-16),new vec(0,0,1),new vec(0,1,0),500,500);
 		scene=new surface[8];
 		threadn=4;
 		thok=new int[c.x];
