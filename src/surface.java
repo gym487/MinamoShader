@@ -123,6 +123,23 @@ class mirrsphere extends sphere{
 	}
 }
 
+class diffsphere extends sphere{
+	spec sd;
+	public diffsphere(vec c,double r,spec d){
+		this.c=c;
+		this.sd=d;
+		this.r=r;
+	}
+
+	public node gen(point pt){
+		nnode rn=new nnode(minamo.sam);
+		for(int i=0;i<minamo.sam;i++){
+			rn.setRay(new ray(pt.pos,vec.normalRand(this.getn(pt.pos))),i);
+			rn.setW(this.sd.mul(1.0/minamo.sam),i);
+		}
+		return rn;
+	}
+}
 
 class diffSurface extends plain{
 	spec sd;
