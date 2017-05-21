@@ -19,6 +19,8 @@ abstract class plain extends surface{
 	 public point check(ray r){
 		 
 		 vec t=vec.sub(r.p,this.p);
+		 //if(vec.dot(t,this.n)*vec.dot(r.d,this.n)>0)
+			 //return null;
 			vec vv=vec.sub(r.p,vec.add(this.p,vec.add(this.u.mul(0.5),this.v.mul(0.5))));
 			if(Math.pow(vec.dot(r.d.mul(2),vv),2)-4*(Math.pow(vv.mod(),2)-Math.pow(vec.add(this.v,this.u).mod()/2, 2))<0)
 				return null;//surround sphere
@@ -165,6 +167,34 @@ class diffSurface extends plain{
 	}
 }
 
+class gridDiffSurface extends plain{
+	spec sd;
+	spec sd2;
+	int vs,us;
+	public gridDiffSurface(vec p,vec p1,vec p2,spec diff,spec diff2,int sh,int us,int vs){
+		this.p=p;
+		this.u=vec.sub(p1,p);
+		this.v=vec.sub(p2,p);
+		this.n=vec.cro(this.u,this.v).unit();
+		this.sd=diff;
+		this.sd2=diff2;
+		this.shape=sh;
+		this.us=us;
+		this.vs=vs;
+	}
+
+	public node gen(point pt){
+		nnode rn=new nnode(minamo.sam);
+		for(int i=0;i<minamo.sam;i++){
+			rn.setRay(new ray(pt.pos,vec.normalRand(this.n)),i);
+			if(pt.u%(1.0/this.us)>0.5/this.us^pt.v%(1.0/this.vs)>0.5/this.vs)
+				rn.setW(this.sd.mul(1.0/minamo.sam),i);
+			else
+				rn.setW(this.sd2.mul(1.0/minamo.sam),i);
+		}
+		return rn;
+	}
+}
 
 
 class refSurface extends plain{
@@ -263,7 +293,7 @@ class water extends surface{
 	int xs,ys;
 	double lx,ly;
 	vec posstart;
-	surface a,b;
+	surface a;
 	public water(vec p,double lx,double ly,int xs,int ys){
 		this.posstart=p;
 		this.lx=lx;
@@ -293,38 +323,31 @@ class water extends surface{
 				this.surfs[(i*ys+j)*2+1]=new refSurface(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],new spec(0.7,0.7,0.9),0,1.3);
 			}
 		}
-		this.a=new diffSurface(this.posstart,vec.add(new vec(0,0.4,this.ly),this.posstart),vec.add(new vec(this.lx,0.4,0),this.posstart),new spec(0,0,0),1);
-		this.b=new diffSurface(this.posstart,vec.add(new vec(this.lx,-0.4,0),this.posstart),vec.add(new vec(0,-0.4,this.ly),this.posstart),new spec(0,0,0),1);
+		this.a=new mirrSurface(this.posstart,vec.add(new vec(0,0,this.ly+1),this.posstart),vec.add(new vec(this.lx+1,0,0),this.posstart),new spec(0,0,0),1);
+		///this.b=new diffSurface(this.posstart,vec.add(new vec(this.lx,-0.4,0),this.posstart),vec.add(new vec(0,-0.4,this.ly),this.posstart),new spec(0,0,0),1);
 	}
 	public point check(ray r){
 		point pa=this.a.check(r);
-		point pb=this.b.check(r);
-		if(pa==null&&pb==null)
+		//point pb=this.b.check(r);
+		if(pa==null)
 			return null;
+
 		point n=null;
-		/*if(pa!=null){
-			if(pb!=null)
-				pn=vec.add(pa.pos, pb.pos).mul(0.5);
-			else
-				pn=pa.pos;
-		}else{
-			pn=pb.pos;
-		}
-		point n=null;
-		double ii=vec.dot(pn, new vec(1,0,0))*this.xs/this.lx;
-		double jj=vec.dot(pn, new vec(0,0,1))*this.ys/this.ly;
+		/*
+		double ii=vec.dot(pa.pos, new vec(1,0,0))*this.xs/this.lx;
+		double jj=vec.dot(pa.pos, new vec(0,0,1))*this.ys/this.ly;
 		double dist=1000000000;
-		for(int i=Math.max((int)(ii-this.lx*1/this.xs),0);i<Math.min((int)(ii+this.lx*1/this.xs),this.xs);i++){
-			for(int j=2*Math.max((int)(jj-this.ly*1/this.ys),0);j<2*Math.min((int)(jj-this.ly*1/this.ys),ys);j++){
-				point nn=this.surfs[i*ys*2+j].check(r);
+		for(int i=Math.max((int)(ii-this.lx*16/this.xs),0);i<Math.min((int)(ii+this.lx*16/this.xs),this.xs);i++){
+			for(int j=2*Math.max((int)(jj-this.ly*16/this.ys),0);j<2*Math.min((int)(jj+this.ly*16/this.ys),this.ys);j++){
+				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
 					}
-			}*/
+			}
+		}*/
 		double dist=1000000000;
 		for(int i=0;i<this.surfs.length;i++){
 				point nn=this.surfs[i].check(r);
-			
 			 if(nn!=null&&nn.t<dist){
 				n=nn;
 			}
