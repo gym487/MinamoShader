@@ -343,13 +343,13 @@ class water extends surface{
 		double ri=vec.dot(sh,new vec(1,0,0))/dx;
 		double rj=vec.dot(sh,new vec(0,0,1))/dy;
 		
-		//double c=jj*rj-ii*ri;
+
 		
 		double dist=1000000000;
 		for(int i=Math.max((int)(ii-Math.abs(ri))-1,0);i<Math.min((int)(ii+Math.abs(ri))+1,this.xs);i++){
 			for(int j=2*Math.max((int)(jj-Math.abs(rj))-1,0);j<2*Math.min((int)(jj+Math.abs(rj))+1,this.ys);j++){
-				//if(Math.abs(i*ri-j*rj+jj*rj-ii*ri)/Math.sqrt(Math.pow(ri,2)+Math.pow(rj,2))>=2)
-					//continue;
+				if(Math.abs(i*rj-j*ri/2+jj*ri-ii*rj)/Math.sqrt(Math.pow(ri,2)+Math.pow(rj,2))>=2)
+					continue;
 				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
