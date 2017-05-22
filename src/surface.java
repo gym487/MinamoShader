@@ -334,12 +334,22 @@ class water extends surface{
 
 		point n=null;
 		vec rp=vec.sub(pa.pos,this.posstart);
-		// this trick is only useful for ray of small incident angle.. 
-		double ii=vec.dot(rp, new vec(1,0,0))*this.xs/this.lx;
-		double jj=vec.dot(rp, new vec(0,0,1))*this.ys/this.ly;
+		vec sh=r.d.mul(1/vec.dot(r.d,new vec(0,1,0)));
+		double dx=this.lx/this.xs;
+		double dy=this.ly/this.ys;
+		
+		double ii=vec.dot(rp, new vec(1,0,0))/dx;
+		double jj=vec.dot(rp, new vec(0,0,1))/dy;
+		double ri=vec.dot(sh,new vec(1,0,0))/dx;
+		double rj=vec.dot(sh,new vec(0,0,1))/dy;
+		
+		//double c=jj*rj-ii*ri;
+		
 		double dist=1000000000;
-		for(int i=Math.max((int)(ii-this.lx*8/this.xs),0);i<Math.min((int)(ii+this.lx*8/this.xs),this.xs);i++){
-			for(int j=2*Math.max((int)(jj-this.ly*4/this.ys),0);j<2*Math.min((int)(jj+this.ly*4/this.ys),this.ys);j++){
+		for(int i=Math.max((int)(ii-Math.abs(ri))-1,0);i<Math.min((int)(ii+Math.abs(ri))+1,this.xs);i++){
+			for(int j=2*Math.max((int)(jj-Math.abs(rj))-1,0);j<2*Math.min((int)(jj+Math.abs(rj))+1,this.ys);j++){
+				//if(Math.abs(i*ri-j*rj+jj*rj-ii*ri)/Math.sqrt(Math.pow(ri,2)+Math.pow(rj,2))>=2)
+					//continue;
 				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
