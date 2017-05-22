@@ -21,9 +21,9 @@ abstract class plain extends surface{
 		 vec t=vec.sub(r.p,this.p);
 		 //if(vec.dot(t,this.n)*vec.dot(r.d,this.n)>0)
 			 //return null;
-			vec vv=vec.sub(r.p,vec.add(this.p,vec.add(this.u.mul(0.5),this.v.mul(0.5))));
-			if(Math.pow(vec.dot(r.d.mul(2),vv),2)-4*(Math.pow(vv.mod(),2)-Math.pow(vec.add(this.v,this.u).mod()/2, 2))<0)
-				return null;//surround sphere
+	//		vec vv=vec.sub(r.p,vec.add(this.p,vec.add(this.u.mul(0.5),this.v.mul(0.5))));
+		//	if(Math.pow(vec.dot(r.d.mul(2),vv),2)-4*(Math.pow(vv.mod(),2)-Math.pow(vec.add(this.v,this.u).mod()/2, 2))<0)
+				//return null;//surround sphere
 		 double h=1/vec.dot(vec.cro(r.d,this.v),this.u);
 		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
 		 if(rt>0.00001){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
@@ -333,25 +333,26 @@ class water extends surface{
 			return null;
 
 		point n=null;
-		/*
-		double ii=vec.dot(pa.pos, new vec(1,0,0))*this.xs/this.lx;
-		double jj=vec.dot(pa.pos, new vec(0,0,1))*this.ys/this.ly;
+		vec rp=vec.sub(pa.pos,this.posstart);
+		
+		double ii=vec.dot(rp, new vec(1,0,0))*this.xs/this.lx;
+		double jj=vec.dot(rp, new vec(0,0,1))*this.ys/this.ly;
 		double dist=1000000000;
-		for(int i=Math.max((int)(ii-this.lx*16/this.xs),0);i<Math.min((int)(ii+this.lx*16/this.xs),this.xs);i++){
-			for(int j=2*Math.max((int)(jj-this.ly*16/this.ys),0);j<2*Math.min((int)(jj+this.ly*16/this.ys),this.ys);j++){
+		for(int i=Math.max((int)(ii-this.lx*16/this.xs),0);i<Math.min((int)(ii+this.lx*6/this.xs),this.xs);i++){
+			for(int j=2*Math.max((int)(jj-this.ly*16/this.ys),0);j<2*Math.min((int)(jj+this.ly*4/this.ys),this.ys);j++){
 				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
 					}
 			}
-		}*/
-		double dist=1000000000;
+		}
+		/*double dist=1000000000;
 		for(int i=0;i<this.surfs.length;i++){
 				point nn=this.surfs[i].check(r);
 			 if(nn!=null&&nn.t<dist){
 				n=nn;
 			}
-		}
+		}*/
 		return n;
 	}
 	public node gen(point pt){
