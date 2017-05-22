@@ -334,12 +334,12 @@ class water extends surface{
 
 		point n=null;
 		vec rp=vec.sub(pa.pos,this.posstart);
-		
+		// this trick is only useful for ray of small incident angle.. 
 		double ii=vec.dot(rp, new vec(1,0,0))*this.xs/this.lx;
 		double jj=vec.dot(rp, new vec(0,0,1))*this.ys/this.ly;
 		double dist=1000000000;
-		for(int i=Math.max((int)(ii-this.lx*16/this.xs),0);i<Math.min((int)(ii+this.lx*6/this.xs),this.xs);i++){
-			for(int j=2*Math.max((int)(jj-this.ly*16/this.ys),0);j<2*Math.min((int)(jj+this.ly*4/this.ys),this.ys);j++){
+		for(int i=Math.max((int)(ii-this.lx*8/this.xs),0);i<Math.min((int)(ii+this.lx*8/this.xs),this.xs);i++){
+			for(int j=2*Math.max((int)(jj-this.ly*4/this.ys),0);j<2*Math.min((int)(jj+this.ly*4/this.ys),this.ys);j++){
 				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
