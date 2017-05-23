@@ -291,60 +291,59 @@ class lightSurface extends plain{
 class water extends surface{
 	public surface[] surfs;
 	int xs,ys;
-	double lx,ly;
+	vec u,v;
 	vec posstart;
 	surface a;
-	public water(vec p,double lx,double ly,int xs,int ys){
+	spec sp;
+	double reff;
+	public water(vec p,vec p1, vec p2,int xs,int ys,spec sp,double r){
 		this.posstart=p;
-		this.lx=lx;
-		this.ly=ly;
+		this.u=vec.sub(p1,p);
+		this.v=vec.sub(p2,p);
 		this.xs=xs;
 		this.ys=ys;
-		
+		this.sp=sp;
+		this.reff=r;
 		this.surfs=new surface[xs*ys*2];
 		System.out.println(xs+","+ys+","+xs*ys*2);
 		vec[][] poss=new vec[xs+1][ys+1];
 		double h[][]=new double[xs+1][ys+1];
-		double dx=lx/xs;
-		double dy=ly/ys;
 		for(int i=0;i<=xs;i++){
 			for(int j=0;j<=ys;j++){
-				h[i][j]=Math.sin(2*i*dx+3*j*dy)*0.12+Math.sin(i*dx-j*dy+0.5)*0.1;
+				h[i][j]=this.wav((double)i/xs,(double)j/ys);
+			//	System.out.println(i+" "+j+" "+":"+h[i][j]);
 			}
 		}
 		for(int i=0;i<=xs;i++){
 			for(int j=0;j<=ys;j++){
-				poss[i][j]=vec.add(this.posstart,new vec(i*dx,h[i][j],j*dy));
+				poss[i][j]=vec.add(p,vec.add(vec.add(this.u.mul((double)i/xs),this.v.mul((double)j/ys)),vec.cro(this.u,this.v).unit().mul(h[i][j])));
+				//System.out.println(i+" "+j+" "+":"+poss[i][j].x+" "+poss[i][j].y+" "+poss[i][j].z);
 			}
 		}
 		for(int i=0;i<xs;i++){
 			for(int j=0;j<ys;j++){
-				this.surfs[(i*ys+j)*2]=new refSurface(poss[i][j],poss[i+1][j],poss[i][j+1],new spec(0.9,0.9,0.9),0,1.3);
-				this.surfs[(i*ys+j)*2+1]=new refSurface(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],new spec(0.7,0.7,0.9),0,1.3);
+				this.surfs[(i*ys+j)*2]=new refSurface(poss[i][j],poss[i+1][j],poss[i][j+1],sp,0,r);
+				this.surfs[(i*ys+j)*2+1]=new refSurface(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],sp,0,r);
 			}
 		}
-		this.a=new mirrSurface(this.posstart,vec.add(new vec(0,0,this.ly+1),this.posstart),vec.add(new vec(this.lx+1,0,0),this.posstart),new spec(0,0,0),1);
+		this.a=new mirrSurface(p,p1,p2,new spec(0,0,0),1);
 		///this.b=new diffSurface(this.posstart,vec.add(new vec(this.lx,-0.4,0),this.posstart),vec.add(new vec(0,-0.4,this.ly),this.posstart),new spec(0,0,0),1);
+	}
+	public double wav(double uu,double vv){
+		return Math.sin(24*uu+20*vv)*0.1+Math.sin(20*uu-18*vv+2.8)*0.1+Math.sin(30*uu+1)*0.05;
+		//return 0;
 	}
 	public point check(ray r){
 		point pa=this.a.check(r);
 		//point pb=this.b.check(r);
 		if(pa==null)
 			return null;
-
 		point n=null;
-		vec rp=vec.sub(pa.pos,this.posstart);
-		vec sh=r.d.mul(1/vec.dot(r.d,new vec(0,1,0)));
-		double dx=this.lx/this.xs;
-		double dy=this.ly/this.ys;
-		
-		double ii=vec.dot(rp, new vec(1,0,0))/dx;
-		double jj=vec.dot(rp, new vec(0,0,1))/dy;
-		double ri=vec.dot(sh,new vec(1,0,0))/dx;
-		double rj=vec.dot(sh,new vec(0,0,1))/dy;
-		
-
-		
+		vec sh=r.d.mul(1/vec.dot(r.d,vec.cro(this.u,this.v).unit()));
+		double ii=pa.u*this.xs;
+		double jj=pa.v*this.ys;
+		double ri=vec.dot(sh,this.u.unit())*this.xs/this.u.mod();
+		double rj=vec.dot(sh,this.v.unit())*this.ys/this.v.mod();
 		double dist=1000000000;
 		for(int i=Math.max((int)(ii-Math.abs(ri))-1,0);i<Math.min((int)(ii+Math.abs(ri))+1,this.xs);i++){
 			for(int j=2*Math.max((int)(jj-Math.abs(rj))-1,0);j<2*Math.min((int)(jj+Math.abs(rj))+1,this.ys);j++){
@@ -353,20 +352,57 @@ class water extends surface{
 				point nn=this.surfs[i*this.ys*2+j].check(r);
 				 if(nn!=null&&nn.t<dist){
 						n=nn;
+						dist=nn.t;
+						
 					}
 			}
 		}
-		/*double dist=1000000000;
-		for(int i=0;i<this.surfs.length;i++){
-				point nn=this.surfs[i].check(r);
-			 if(nn!=null&&nn.t<dist){
-				n=nn;
-			}
-		}*/
+		if(n!=null) n.surf=this;
 		return n;
 	}
+	public vec getn(vec pos){
+		double del=1e-4;
+		vec rr=vec.sub(pos,this.posstart);
+		double uu=vec.dot(rr,this.u.unit())/this.u.mod();
+		double vv=vec.dot(rr,this.v.unit())/this.v.mod();
+		double du=(this.wav(uu+del,vv)-this.wav(uu-del,vv))/(2*del);
+		double dv=(this.wav(uu,vv+del)-this.wav(uu,vv-del))/(2*del);
+		vec fn=vec.cro(this.u,this.v).unit();
+		vec a=vec.add(this.u,fn.mul(du));
+		vec b=vec.add(this.v,fn.mul(dv));
+		return vec.cro(a,b).unit();
+	}
 	public node gen(point pt){
-		return this.surfs[pt.num].gen(pt);
+		double reff;
+		vec n=this.getn(pt.pos);
+		reff=this.reff;
+		if(vec.dot(pt.r.d,this.getn(pt.pos))>0){
+			reff=1/reff;
+			n=n.opp();
+		}
+		double cos1=-vec.dot(n,pt.r.d);
+		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
+				nnode rn=new nnode(2);
+				rn.setRay(rt,1);
+				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
+				double a=cos1/cos2;
+				double b=reff;
+				double wr=Math.pow((a-b)/(a+b), 2);
+				double wt=a*b*(2/(a+b));
+				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
+				rn.setRay(tt,0);
+				rn.setW(this.sp.mul(wr),1);
+				rn.setW(this.sp.mul(wt),0);
+				return rn;
+		}else{
+				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
+				nnode rn=new nnode(1);
+				rn.setRay(rt,0);
+				rn.setW(this.sp,0);
+				return rn;
+		}
+		//return pt.surf.gen(pt);
 	}
 }
 
@@ -375,7 +411,7 @@ class point{
 	vec pos;
 	ray r;
 	double u,v,t;
-	int num;//for water
+	//int num;//for water
 	 point(vec pos,double u,double v,double t,surface surf,ray r){
 		 this.pos=pos;
 		 this.surf=surf;

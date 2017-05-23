@@ -1,6 +1,6 @@
 
 public  class vec {
-	private double x,y,z;
+	double x,y,z;
 	public  vec(double x,double y,double z){
 		this.x=x;
 		this.y=y;
