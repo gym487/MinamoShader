@@ -67,15 +67,13 @@ public class cam {
 	
 
 class focuscam extends cam{
-	double lx,ly;
+	double r;
 	double ld;
 
-	public focuscam(vec pos,vec d,vec dy,int x,int y,double lx,double ly,double ld){
+	public focuscam(vec pos,vec d,vec dy,int x,int y,double r,double ld){
 		super(pos,d,dy,x,y);
+		this.r=r;
 		this.ld=ld;
-		this.ly=ly;
-		this.lx=lx;
-		
 	}
 	public void shoot1(int xx,int yy){
 
@@ -83,7 +81,13 @@ class focuscam extends cam{
 		for(int i=0;i<minamo.psam;i++){
 			vec dir=vec.add(this.d,vec.add(this.dx.mul((xx+(Math.random()-0.5)-((double)this.x/2))/(double)this.x), this.dy.mul((yy+(Math.random()-0.5)-(double)(this.y/2))/(double)this.y))).unit();
 			vec p=vec.add(this.pos,dir.mul(vec.dot(dir,this.d.mul(this.ld))));
-			vec pixel=vec.add(this.pos,vec.add(this.dx.mul(this.ly*(Math.random()-0.5)),this.dy.mul(this.ly*(Math.random()-0.5))));
+			double lx=1;
+			double ly=1;
+			while(Math.pow(lx, 2)+Math.pow(ly,2)>1){
+				lx=(Math.random()-0.5)*2;
+				ly=(Math.random()-0.5)*2;
+			}
+			vec pixel=vec.add(this.pos,vec.add(this.dx.mul(this.r*lx),this.dy.mul(this.r*ly)));
 			vec dirr=vec.sub(p,pixel).unit();
 			ray r=new ray(pixel,dirr);
 			nn.setRay(r,i);
