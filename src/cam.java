@@ -65,3 +65,32 @@ public class cam {
 	
 }
 	
+
+class focuscam extends cam{
+	double lx,ly;
+	double ld;
+
+	public focuscam(vec pos,vec d,vec dy,int x,int y,double lx,double ly,double ld){
+		super(pos,d,dy,x,y);
+		this.ld=ld;
+		this.ly=ly;
+		this.lx=lx;
+		
+	}
+	public void shoot1(int xx,int yy){
+
+		nnode nn=new nnode(minamo.psam);
+		for(int i=0;i<minamo.psam;i++){
+			vec dir=vec.add(this.d,vec.add(this.dx.mul((xx+(Math.random()-0.5)-((double)this.x/2))/(double)this.x), this.dy.mul((yy+(Math.random()-0.5)-(double)(this.y/2))/(double)this.y))).unit();
+			vec p=vec.add(this.pos,dir.mul(vec.dot(dir,this.d.mul(this.ld))));
+			vec pixel=vec.add(this.pos,vec.add(this.dx.mul(this.ly*(Math.random()-0.5)),this.dy.mul(this.ly*(Math.random()-0.5))));
+			vec dirr=vec.sub(p,pixel).unit();
+			ray r=new ray(pixel,dirr);
+			nn.setRay(r,i);
+			nn.setW(new spec(1,1,1).mul(1.0/minamo.psam),i);
+		}
+		this.filmn[xx][yy]=nn;
+}
+	
+}
+
