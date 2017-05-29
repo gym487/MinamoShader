@@ -7,6 +7,9 @@ public abstract class surface {
 	 public point check(ray r){
 		 return null;
 	 }
+	 public vec getn(point pos){
+		 return null;
+	 }
 }
 
 abstract class plain extends surface{
