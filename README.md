@@ -11,7 +11,7 @@ Edit src/minamo.java to change the scene and settings.
 
 with depth of focus
 s
-![image](https://github.com/gym487/MinamoShader/blob/master/docs/cornell2.jpg?raw=true)
+![image](https://github.com/gym487/MinamoShader/blob/master/docs/cornel2.jpg?raw=true)
 
 Run:
 
