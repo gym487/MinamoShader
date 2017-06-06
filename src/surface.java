@@ -12,13 +12,25 @@ public abstract class surface {
 	 }
 }
 
-abstract class plain extends surface{
+ class plain extends surface{
 	 int shape;//0=tri 1=squ
 	 vec p,u,v,n;//point u v normal;
+	 texture tx;
+	public plain(vec p,vec p1,vec p2,int sh,texture tx){
+			this.p=p;
+			this.u=vec.sub(p1,p);
+			this.v=vec.sub(p2,p);
+			this.n=vec.cro(this.u, this.v).unit();
+			this.tx=tx;
+			this.shape=sh;
+		}
+
 	 public node gen(point pt){
-		 return null;
+		 return tx.gen(pt);
 	 }
-	 
+	 public vec getn(point pt){
+		 return this.n;
+	 }
 	 public point check(ray r){
 		 
 		 vec t=vec.sub(r.p,this.p);
@@ -46,9 +58,15 @@ abstract class plain extends surface{
 	
 }
 
-abstract class sphere extends surface{
+class sphere extends surface{
 	vec c;//center
 	double r;//radius
+	texture tx;
+	public sphere(vec c,double r,texture tx){
+		this.c=c;
+		this.tx=tx;
+		this.r=r;
+	}
 	public point check(ray r){
 		vec v=vec.sub(r.p,this.c);
 		if(Math.pow(vec.dot(r.d.mul(2),v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
@@ -68,222 +86,11 @@ abstract class sphere extends surface{
 			}
 		}
 	}
-	public vec getn(vec pos){
-		return vec.sub(pos,this.c).unit();
-	}
-}
-class refsphere extends sphere{
-	double ref;
-	spec sf,st;
-	public refsphere(vec c,double r,spec f,double ref){
-		this.c=c;
-		this.sf=f;
-		this.ref=ref;
-		this.r=r;
+	public vec getn(point pt){
+		return vec.sub(pt.pos,this.c).unit();
 	}
 	public node gen(point pt){
-
-		double reff;
-		vec n=this.getn(pt.pos);
-		reff=this.ref;
-		if(vec.dot(pt.r.d,this.getn(pt.pos))>0){
-			reff=1/reff;
-			n=n.opp();
-		}
-		double cos1=-vec.dot(n,pt.r.d);
-		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
-				nnode rn=new nnode(2);
-				rn.setRay(rt,1);
-				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
-				double a=cos1/cos2;
-				double b=reff;
-				double wr=Math.pow((a-b)/(a+b), 2);
-				double wt=a*b*(2/(a+b));
-				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
-				rn.setRay(tt,0);
-				rn.setW(this.sf.mul(wr),1);
-				rn.setW(this.sf.mul(wt),0);
-				return rn;
-		}else{
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
-				nnode rn=new nnode(1);
-				rn.setRay(rt,0);
-				rn.setW(this.sf,0);
-				return rn;
-		}
-}
-}
-
-class mirrsphere extends sphere{
-	spec sf;
-	public mirrsphere(vec c,double r,spec f){
-		this.c=c;
-		this.sf=f;
-		this.r=r;
-	}
-	public node gen(point pt){
-		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.getn(pt.pos).mul(2*vec.dot(this.getn(pt.pos),pt.r.d))));
-		nnode rn=new nnode(1);
-		rn.setRay(rt,0);
-		rn.setW(this.sf,0);
-		return rn;
-	}
-}
-
-class diffsphere extends sphere{
-	spec sd;
-	public diffsphere(vec c,double r,spec d){
-		this.c=c;
-		this.sd=d;
-		this.r=r;
-	}
-
-	public node gen(point pt){
-		nnode rn=new nnode(minamo.sam);
-		for(int i=0;i<minamo.sam;i++){
-			rn.setRay(new ray(pt.pos,vec.normalRand(this.getn(pt.pos))),i);
-			rn.setW(this.sd.mul(1.0/minamo.sam),i);
-		}
-		return rn;
-	}
-}
-
-class diffSurface extends plain{
-	spec sd;
-	public diffSurface(vec p,vec p1,vec p2,spec diff,int sh){
-		this.p=p;
-		this.u=vec.sub(p1,p);
-		this.v=vec.sub(p2,p);
-		this.n=vec.cro(this.u,this.v).unit();
-		this.sd=diff;
-		this.shape=sh;
-	}
-
-	public node gen(point pt){
-		nnode rn=new nnode(minamo.sam);
-		for(int i=0;i<minamo.sam;i++){
-			rn.setRay(new ray(pt.pos,vec.normalRand(this.n)),i);
-			rn.setW(this.sd.mul(1.0/minamo.sam),i);
-		}
-		return rn;
-	}
-}
-
-class gridDiffSurface extends plain{
-	spec sd;
-	spec sd2;
-	int vs,us;
-	public gridDiffSurface(vec p,vec p1,vec p2,spec diff,spec diff2,int sh,int us,int vs){
-		this.p=p;
-		this.u=vec.sub(p1,p);
-		this.v=vec.sub(p2,p);
-		this.n=vec.cro(this.u,this.v).unit();
-		this.sd=diff;
-		this.sd2=diff2;
-		this.shape=sh;
-		this.us=us;
-		this.vs=vs;
-	}
-
-	public node gen(point pt){
-		nnode rn=new nnode(minamo.sam);
-		for(int i=0;i<minamo.sam;i++){
-			rn.setRay(new ray(pt.pos,vec.normalRand(this.n)),i);
-			if(pt.u%(1.0/this.us)>0.5/this.us^pt.v%(1.0/this.vs)>0.5/this.vs)
-				rn.setW(this.sd.mul(1.0/minamo.sam),i);
-			else
-				rn.setW(this.sd2.mul(1.0/minamo.sam),i);
-		}
-		return rn;
-	}
-}
-
-
-class refSurface extends plain{
-	spec sf;
-	double ref;
-	public refSurface(vec p,vec p1,vec p2,spec f,int sh,double ref){
-		this.p=p;
-		this.u=vec.sub(p1,p);
-		this.v=vec.sub(p2, p);
-		this.n=vec.cro(this.u,this.v).unit();
-		this.sf=f;
-		this.shape=sh;
-		this.ref=ref;
-	}
-
-	public node gen(point pt){
-
-		double reff;
-		vec n=this.n;
-		reff=this.ref;
-		if(vec.dot(pt.r.d,this.n)>0){
-			reff=1/reff;
-			n=n.opp();
-		}
-		double cos1=-vec.dot(n,pt.r.d);
-		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
-				nnode rn=new nnode(2);
-				rn.setRay(rt,1);
-				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
-				double a=cos1/cos2;
-				double b=reff;
-				double wr=Math.pow((a-b)/(a+b), 2);
-				double wt=a*b*(2/(a+b));
-				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
-				rn.setRay(tt,0);
-				rn.setW(this.sf.mul(wr),1);
-				rn.setW(this.sf.mul(wt),0);
-				return rn;
-		}else{
-				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
-				nnode rn=new nnode(1);
-				rn.setRay(rt,0);
-				rn.setW(this.sf,0);
-				return rn;
-		}
-	}
-}
-
-class mirrSurface extends plain{
-	spec sf;
-	public mirrSurface(vec p,vec p1,vec p2,spec f,int sh){
-		this.p=p;
-		this.u=vec.sub(p1,p);
-		this.v=vec.sub(p2, p);
-		this.n=vec.cro(this.u,this. v).unit();
-		this.sf=f;
-		this.shape=sh;
-	}
-
-	public node gen(point pt){
-		ray rt=new ray(pt.pos,vec.sub(pt.r.d,this.n.mul(2*vec.dot(this.n,pt.r.d))));
-		nnode rn=new nnode(1);
-		rn.setRay(rt,0);
-		rn.setW(this.sf,0);
-		return rn;
-	}
-}
-
-
-class lightSurface extends plain{
-	spec light;
-	public lightSurface(vec p,vec p1,vec p2,spec l,int sh){
-		this.p=p;
-		this.u=vec.sub(p1,p);;
-		this.v=vec.sub(p2,p);;
-		this.n=vec.cro(this.u, this.v).unit();
-		this.light=l;
-		this.shape=sh;
-	}
-
-	public node gen(point pt){
-		if(vec.dot(pt.r.d,this.n)<0)
-			return new lnode(this.light);
-		else
-			return new lnode(new spec(0,0,0));
+		return this.tx.gen(pt);
 	}
 }
 
@@ -325,11 +132,11 @@ class water extends surface{
 		}
 		for(int i=0;i<xs;i++){
 			for(int j=0;j<ys;j++){
-				this.surfs[(i*ys+j)*2]=new refSurface(poss[i][j],poss[i+1][j],poss[i][j+1],sp,0,r);
-				this.surfs[(i*ys+j)*2+1]=new refSurface(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],sp,0,r);
+				this.surfs[(i*ys+j)*2]=new plain(poss[i][j],poss[i+1][j],poss[i][j+1],0,null);
+				this.surfs[(i*ys+j)*2+1]=new plain(poss[i+1][j+1],poss[i][j+1],poss[i+1][j],0,null);
 			}
 		}
-		this.a=new mirrSurface(p,p1,p2,new spec(0,0,0),1);
+		this.a=new plain(p,p1,p2,1,null);
 		///this.b=new diffSurface(this.posstart,vec.add(new vec(this.lx,-0.4,0),this.posstart),vec.add(new vec(0,-0.4,this.ly),this.posstart),new spec(0,0,0),1);
 	}
 	public double wav(double uu,double vv){
