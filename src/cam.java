@@ -25,9 +25,9 @@ public class cam {
 
 				nnode nn=new nnode(minamo.psam);
 				for(int i=0;i<minamo.psam;i++){
-					ray r=new ray(this.pos,vec.add(this.d,vec.add(this.dx.mul((xx+(Math.random()-0.5)-((double)this.x/2))/(double)this.x), this.dy.mul((yy+(Math.random()-0.5)-(double)(this.y/2))/(double)this.y))));
+					ray r=new ray(this.pos,vec.add(this.d,vec.add(this.dx.mul((xx+((float)Math.random()-0.5f)-((float)this.x/2))/(float)this.x), this.dy.mul((yy+((float)Math.random()-0.5f)-(float)(this.y/2))/(float)this.y))));
 					nn.setRay(r,i);
-					nn.setW(new spec(1,1,1).mul(1.0/minamo.psam),i);
+					nn.setW(new spec(1,1,1).mul(1.0f/minamo.psam),i);
 				}
 				this.filmn[xx][yy]=nn;
 	}
@@ -67,10 +67,10 @@ public class cam {
 	
 
 class focuscam extends cam{
-	double r;
-	double ld;
+	float r;
+	float ld;
 
-	public focuscam(vec pos,vec d,vec dy,int x,int y,double r,double ld){
+	public focuscam(vec pos,vec d,vec dy,int x,int y,float r,float ld){
 		super(pos,d,dy,x,y);
 		this.r=r;
 		this.ld=ld;
@@ -79,19 +79,19 @@ class focuscam extends cam{
 
 		nnode nn=new nnode(minamo.psam);
 		for(int i=0;i<minamo.psam;i++){
-			vec dir=vec.add(this.d,vec.add(this.dx.mul((xx+(Math.random()-0.5)-((double)this.x/2))/(double)this.x), this.dy.mul((yy+(Math.random()-0.5)-(double)(this.y/2))/(double)this.y))).unit();
+			vec dir=vec.add(this.d,vec.add(this.dx.mul((xx+((float)Math.random()-0.5f)-((float)this.x/2))/(float)this.x), this.dy.mul((yy+((float)Math.random()-0.5f)-(float)(this.y/2))/(float)this.y))).unit();
 			vec p=vec.add(this.pos,dir.mul(vec.dot(dir,this.d.mul(this.ld))));
-			double lx=1;
-			double ly=1;
+			float lx=1;
+			float ly=1;
 			while(Math.pow(lx, 2)+Math.pow(ly,2)>1){
-				lx=(Math.random()-0.5)*2;
-				ly=(Math.random()-0.5)*2;
+				lx=((float)Math.random()-0.5f)*2;
+				ly=((float)Math.random()-0.5f)*2;
 			}
 			vec pixel=vec.add(this.pos,vec.add(this.dx.mul(this.r*lx),this.dy.mul(this.r*ly)));
 			vec dirr=vec.sub(p,pixel).unit();
 			ray r=new ray(pixel,dirr);
 			nn.setRay(r,i);
-			nn.setW(new spec(1,1,1).mul(1.0/minamo.psam),i);
+			nn.setW(new spec(1,1,1).mul(1.0f/minamo.psam),i);
 		}
 		this.filmn[xx][yy]=nn;
 }

@@ -39,13 +39,13 @@ public abstract class surface {
 	//		vec vv=vec.sub(r.p,vec.add(this.p,vec.add(this.u.mul(0.5),this.v.mul(0.5))));
 		//	if(Math.pow(vec.dot(r.d.mul(2),vv),2)-4*(Math.pow(vv.mod(),2)-Math.pow(vec.add(this.v,this.u).mod()/2, 2))<0)
 				//return null;//surround sphere
-		 double h=1/vec.dot(vec.cro(r.d,this.v),this.u);
-		 double rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
+		 float h=1/vec.dot(vec.cro(r.d,this.v),this.u);
+		 float rt=(vec.dot(vec.cro(t,this.u),this.v))*h;
 		 if(rt>0.00001){//&&vec.dot(r.d, this.n)<0  direction check // if rt=0 the ray will intersect the surface witch it from... that might cause a endless loop..
-			 double ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
+			 float ru=(vec.dot(vec.cro(r.d,this.v),t))*h;
 			 if(ru<0||ru>1)
 				 return null;
-			 double rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
+			 float rv=(vec.dot(vec.cro(t,this.u),r.d))*h;
 			 if(rv<0||rv>1)
 				 return null;
 			 if((this.shape==0&&ru+rv<=1)||(this.shape==1&&ru<=1&&rv<=1)){
@@ -60,9 +60,9 @@ public abstract class surface {
 
 class sphere extends surface{
 	vec c;//center
-	double r;//radius
+	float r;//radius
 	texture tx;
-	public sphere(vec c,double r,texture tx){
+	public sphere(vec c,float r,texture tx){
 		this.c=c;
 		this.tx=tx;
 		this.r=r;
@@ -72,11 +72,11 @@ class sphere extends surface{
 		if(Math.pow(vec.dot(r.d.mul(2),v),2)-4*(Math.pow(v.mod(),2)-Math.pow(this.r, 2))<0)
 			return null;
 		else{
-			double t;
+			float t;
 			if(v.mod()-this.r>0.00001){
-				t=-vec.dot(r.d, v)-Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
+				t=-vec.dot(r.d, v)-(float)Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
 			}else{
-				t=-vec.dot(r.d, v)+Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
+				t=-vec.dot(r.d, v)+(float)Math.sqrt(Math.pow(vec.dot(r.d,v),2)-(Math.pow(v.mod(), 2)-Math.pow(this.r,2)));
 			}
 			if(t>0.00001){
 				vec pos=vec.add(r.p,r.d.mul(t));
@@ -105,8 +105,8 @@ class water extends surface{
 	vec posstart;
 	surface a;
 	spec sp;
-	double reff;
-	public water(vec p,vec p1, vec p2,int xs,int ys,spec sp,double r){
+	float reff;
+	public water(vec p,vec p1, vec p2,int xs,int ys,spec sp,float r){
 		this.posstart=p;
 		this.u=vec.sub(p1,p);
 		this.v=vec.sub(p2,p);
@@ -117,16 +117,16 @@ class water extends surface{
 		this.surfs=new surface[xs*ys*2];
 		System.out.println(xs+","+ys+","+xs*ys*2);
 		vec[][] poss=new vec[xs+1][ys+1];
-		double h[][]=new double[xs+1][ys+1];
+		float h[][]=new float[xs+1][ys+1];
 		for(int i=0;i<=xs;i++){
 			for(int j=0;j<=ys;j++){
-				h[i][j]=this.wav((double)i/xs,(double)j/ys);
+				h[i][j]=this.wav((float)i/xs,(float)j/ys);
 			//	System.out.println(i+" "+j+" "+":"+h[i][j]);
 			}
 		}
 		for(int i=0;i<=xs;i++){
 			for(int j=0;j<=ys;j++){
-				poss[i][j]=vec.add(p,vec.add(vec.add(this.u.mul((double)i/xs),this.v.mul((double)j/ys)),vec.cro(this.u,this.v).unit().mul(h[i][j])));
+				poss[i][j]=vec.add(p,vec.add(vec.add(this.u.mul((float)i/xs),this.v.mul((float)j/ys)),vec.cro(this.u,this.v).unit().mul(h[i][j])));
 				//System.out.println(i+" "+j+" "+":"+poss[i][j].x+" "+poss[i][j].y+" "+poss[i][j].z);
 			}
 		}
@@ -139,8 +139,8 @@ class water extends surface{
 		this.a=new plain(p,p1,p2,1,null);
 		///this.b=new diffSurface(this.posstart,vec.add(new vec(this.lx,-0.4,0),this.posstart),vec.add(new vec(0,-0.4,this.ly),this.posstart),new spec(0,0,0),1);
 	}
-	public double wav(double uu,double vv){
-		return Math.sin(24*uu+20*vv)*0.1+Math.sin(20*uu-18*vv+2.8)*0.1+Math.sin(30*uu+1)*0.05;
+	public float wav(float uu,float vv){
+		return (float)(Math.sin(24*uu+20*vv)*0.1+Math.sin(20*uu-18*vv+2.8f)*0.1f+Math.sin(30*uu+1)*0.05f);
 		//return 0;
 	}
 	public point check(ray r){
@@ -150,11 +150,11 @@ class water extends surface{
 			return null;
 		point n=null;
 		vec sh=r.d.mul(1/vec.dot(r.d,vec.cro(this.u,this.v).unit()));
-		double ii=pa.u*this.xs;
-		double jj=pa.v*this.ys;
-		double ri=vec.dot(sh,this.u.unit())*this.xs/this.u.mod();
-		double rj=vec.dot(sh,this.v.unit())*this.ys/this.v.mod();
-		double dist=1000000000;
+		float ii=pa.u*this.xs;
+		float jj=pa.v*this.ys;
+		float ri=vec.dot(sh,this.u.unit())*this.xs/this.u.mod();
+		float rj=vec.dot(sh,this.v.unit())*this.ys/this.v.mod();
+		float dist=1000000000;
 		for(int i=Math.max((int)(ii-Math.abs(ri))-1,0);i<Math.min((int)(ii+Math.abs(ri))+1,this.xs);i++){
 			for(int j=2*Math.max((int)(jj-Math.abs(rj))-1,0);j<2*Math.min((int)(jj+Math.abs(rj))+1,this.ys);j++){
 				if(Math.abs(i*rj-j*ri/2+jj*ri-ii*rj)/Math.sqrt(Math.pow(ri,2)+Math.pow(rj,2))>=2)
@@ -171,35 +171,35 @@ class water extends surface{
 		return n;
 	}
 	public vec getn(vec pos){
-		double del=1e-4;
+		float del=1e-4f;
 		vec rr=vec.sub(pos,this.posstart);
-		double uu=vec.dot(rr,this.u.unit())/this.u.mod();
-		double vv=vec.dot(rr,this.v.unit())/this.v.mod();
-		double du=(this.wav(uu+del,vv)-this.wav(uu-del,vv))/(2*del);
-		double dv=(this.wav(uu,vv+del)-this.wav(uu,vv-del))/(2*del);
+		float uu=vec.dot(rr,this.u.unit())/this.u.mod();
+		float vv=vec.dot(rr,this.v.unit())/this.v.mod();
+		float du=(this.wav(uu+del,vv)-this.wav(uu-del,vv))/(2*del);
+		float dv=(this.wav(uu,vv+del)-this.wav(uu,vv-del))/(2*del);
 		vec fn=vec.cro(this.u,this.v).unit();
 		vec a=vec.add(this.u,fn.mul(du));
 		vec b=vec.add(this.v,fn.mul(dv));
 		return vec.cro(a,b).unit();
 	}
 	public node gen(point pt){
-		double reff;
+		float reff;
 		vec n=this.getn(pt.pos);
 		reff=this.reff;
 		if(vec.dot(pt.r.d,this.getn(pt.pos))>0){
 			reff=1/reff;
 			n=n.opp();
 		}
-		double cos1=-vec.dot(n,pt.r.d);
+		float cos1=-vec.dot(n,pt.r.d);
 		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
 				rn.setRay(rt,1);
-				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
-				double a=cos1/cos2;
-				double b=reff;
-				double wr=Math.pow((a-b)/(a+b), 2);
-				double wt=a*b*(2/(a+b));
+				float cos2=(float)Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
+				float a=cos1/cos2;
+				float b=reff;
+				float wr=(float)Math.pow((a-b)/(a+b), 2);
+				float wt=a*b*(2/(a+b));
 				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
 				rn.setRay(tt,0);
 				rn.setW(this.sp.mul(wr),1);
@@ -220,9 +220,9 @@ class point{
 	surface surf;
 	vec pos;
 	ray r;
-	double u,v,t;
+	float u,v,t;
 	//int num;//for water
-	 point(vec pos,double u,double v,double t,surface surf,ray r){
+	 point(vec pos,float u,float v,float t,surface surf,ray r){
 		 this.pos=pos;
 		 this.surf=surf;
 		 this.v=v;

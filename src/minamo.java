@@ -1,7 +1,7 @@
 import java.util.Arrays; 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=10;
+	public static int psam=100;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
@@ -20,25 +20,21 @@ public  class minamo extends Thread {
 	public  static void main(String arg[]){//Test scene below
 		//TODO: Load scene from text file.
 		//cam c=new cam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500);
-		cam c=new focuscam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500,0.2,11.0);
-		scene=new surface[8];
-		threadn=8;
+		cam c=new focuscam(new vec(0,0,0),new vec(0,0,1),new vec(0,1,0),500,500,0.1f,11.0f);
+		scene=new surface[7];
+		threadn=4;
 		thok=new int[c.x];
 		Arrays.fill(thok,-1);
 		threads=new thread[threadn];
-		scene[0]=new plain(new vec(-6,-4,18),new vec(-6,4,18),new vec(6,-4,18),1,new diff(new spec(0.5,0.1,0.1)));
-		//scene[1]=new diffSurface(new vec(6,4,18),new vec(-6,4,18),new vec(6,4,-4),new spec(0.1,0.5,0.1),1);
-		scene[1]=new plain(new vec(6,4,18),new vec(-6,4,18),new vec(6,4,-4),1,new grid(new spec(0.1,0.5,0.1),new spec(0.5,0.1,0.5),3,6));
-		//scene[0]=new gridDiffSurface(new vec(60,4,180),new vec(-60,4,180),new vec(60,4,-4),new spec(0.1,0.5,0.1),new spec(0.5,0.1,0.5),1,15,30);
-		scene[2]=new plain(new vec(6,-4,18),new vec(6,4,18),new vec(6,-4,-4),1,new diff(new spec(0.1,0.1,0.5)));
-		scene[3]=new plain(new vec(-6,-4,18),new vec(6,-4,18),new vec(-6,-4,-4),1,new diff(new spec(0.5,0.5,0.1)));
-		scene[4]=new plain(new vec(-6,4,18),new vec(-6,-4,18),new vec(-6,4,-4),1,new diff(new spec(0.1,0.5,0.5)));
-		scene[5]=new plain(new vec(-4,-3.99,16),new vec(4,-3.99,16),new vec(-4,-3.99,8),1,new light(new spec(30000,30000,30000)));
-		scene[6]=new sphere(new vec(2,2.5,10),1.5,new ref(new spec(0.9,0.9,0.9),1.5));
-		scene[7]=new sphere(new vec(-2,2.5,12),1.5,new mirr(new spec(0.9,0.9,0.9)));
-		//scene[8]=new diffSurface(new vec(-6,4,-4),new vec(-6,-4,-4),new vec(6,4,-4),new spec(0.5,0.1,0.5),1);
-		//scene[6]=new refSurface(new vec(-2,-2,10),new vec(-2,2,10),new vec(2,-2,10),new spec(0.05,0.05,0.05),new spec(0.9,0.9,0.9),1,1.5);
-//scene[6]=new water(new vec(6,2,18),new vec(-6,2,18),new vec(6,2,-4),24,48,new spec(0.9,0.9,0.9),1.3);
+		scene[0]=new plain(new vec(-6,-4,18),new vec(-6,4,18),new vec(6,-4,18),1,new diff(new spec(0.5f,0.1f,0.1f)));
+		scene[1]=new plain(new vec(6,4,18),new vec(-6,4,18),new vec(6,4,-4),1,new grid(new spec(0.1f,0.5f,0.1f),new spec(0.5f,0.1f,0.5f),3,6));
+		scene[2]=new plain(new vec(6,-4,18),new vec(6,4,18),new vec(6,-4,-4),1,new diff(new spec(0.1f,0.1f,0.5f)));
+		scene[3]=new plain(new vec(-6,-4,18),new vec(6,-4,18),new vec(-6,-4,-4),1,new diff(new spec(0.5f,0.5f,0.1f)));
+		scene[4]=new plain(new vec(-6,4,18),new vec(-6,-4,18),new vec(-6,4,-4),1,new diff(new spec(0.1f,0.5f,0.5f)));
+		//scene[5]=new plain(new vec(-4,-3.99,16),new vec(4,-3.99,16),new vec(-4,-3.99,8),1,new light(new spec(30000,30000,30000)));
+		scene[6]=new sphere(new vec(2,2.5f,10),1.5f,new ref(new spec(0.9f,0.9f,0.9f),1.5f));
+		scene[5]=new sphere(new vec(-2f,2.5f,12f),1.5f,new light(new spec(0.9f,0.9f,0.9f).mul(60000f)));
+
 		
 		for(int i=0;i<threadn;i++){
 			threads[i]=new thread(i,c);

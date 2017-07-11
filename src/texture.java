@@ -13,37 +13,37 @@ class diff extends texture{
 		nnode rn=new nnode(minamo.sam);
 		for(int i=0;i<minamo.sam;i++){
 			rn.setRay(new ray(pt.pos,vec.normalRand(pt.surf.getn(pt))),i);
-			rn.setW(this.sp.mul(1.0/minamo.sam),i);
+			rn.setW(this.sp.mul(1.0f/minamo.sam),i);
 		}
 		return rn;
 	}
 	
 }
 class ref extends texture{
-	double ref;
+	float ref;
 	spec sp;
-	public ref(spec sp,double ref){
+	public ref(spec sp,float ref){
 		this.sp=sp;
 		this.ref=ref;
 	}
 	public node gen(point pt){
-		double reff;
+		float reff;
 		vec n=pt.surf.getn(pt);
 		reff=this.ref;
 		if(vec.dot(pt.r.d,pt.surf.getn(pt))>0){
 			reff=1/reff;
 			n=n.opp();
 		}
-		double cos1=-vec.dot(n,pt.r.d);
+		float cos1=-vec.dot(n,pt.r.d);
 		if(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1, 2))>=0){
 				ray rt=new ray(pt.pos,vec.sub(pt.r.d,n.mul(2*vec.dot(n,pt.r.d))));
 				nnode rn=new nnode(2);
 				rn.setRay(rt,1);
-				double cos2=Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
-				double a=cos1/cos2;
-				double b=reff;
-				double wr=Math.pow((a-b)/(a+b), 2);
-				double wt=a*b*(2/(a+b));
+				float cos2=(float)Math.sqrt(1-(1/Math.pow(reff,2))*(1-Math.pow(cos1,2)) );
+				float a=cos1/cos2;
+				float b=reff;
+				float wr=(float)Math.pow((a-b)/(a+b), 2);
+				float wt=a*b*(2/(a+b));
 				ray tt=new ray(pt.pos,vec.add(pt.r.d.mul(1/reff),n.mul((cos1/reff)-cos2)));
 				rn.setRay(tt,0);
 				rn.setW(this.sp.mul(wr),1);
@@ -88,9 +88,9 @@ class grid extends texture{
 		for(int i=0;i<minamo.sam;i++){
 			rn.setRay(new ray(pt.pos,vec.normalRand(pt.surf.getn(pt))),i);
 			if(pt.u%(1.0/this.us)>0.5/this.us^pt.v%(1.0/this.vs)>0.5/this.vs)
-				rn.setW(this.sp.mul(1.0/minamo.sam),i);
+				rn.setW(this.sp.mul(1.0f/minamo.sam),i);
 			else
-				rn.setW(this.sp2.mul(1.0/minamo.sam),i);
+				rn.setW(this.sp2.mul(1.0f/minamo.sam),i);
 		}
 		return rn;
 	}

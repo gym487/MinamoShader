@@ -43,7 +43,7 @@ class nnode extends node {
 		
 		for(int i=0;i<this.rn;i++){
 			if(this.rays[i]!=null&&this.childs[i]==null){
-				double distance=1000000000;
+				float distance=1000000000;
 				point ptt=null;
 				for(int j=0;j<minamo.scene.length;j++){
 					point pt=minamo.scene[j].check(this.rays[i]);
