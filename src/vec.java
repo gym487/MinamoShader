@@ -34,8 +34,10 @@ public  class vec {
 		return new vec(this.x/this.mod(),this.y/this.mod(),this.z/this.mod());
 	}
 	public static vec randvec(){
-		return new vec(1-(float)Math.random()*2,1-(float)Math.random()*2,1-(float)Math.random()*2);
+		return new vec(1-minamo.rand.getrand()*2,1-minamo.rand.getrand()*2,1-minamo.rand.getrand()*2);
+		//return new vec(0,0,1);
 	}
+	
 	public static vec normalRand(vec n){
 		vec r=new vec(0,0,0);
 		while(true){
@@ -44,5 +46,6 @@ public  class vec {
 				break;
 		}
 		return r;
+		//return new vec(0,0,1);
 	}
 }

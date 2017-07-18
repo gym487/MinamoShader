@@ -1,11 +1,12 @@
 import java.util.Arrays; 
 public  class minamo extends Thread {
 	public static int sam=1;
-	public static int psam=100;
+	public static int psam=1000;
 	public static int threadn;
 	public static int[] thok;
 	public static thread threads[];
 	static surface scene[];
+	static rand rand;
 	public static boolean nok(){
 		 int flag=1;
 		 for(int i=0;i<minamo.thok.length;i++){
@@ -25,7 +26,9 @@ public  class minamo extends Thread {
 		threadn=4;
 		thok=new int[c.x];
 		Arrays.fill(thok,-1);
+		rand=new rand(1000000);
 		threads=new thread[threadn];
+		
 		scene[0]=new plain(new vec(-6,-4,18),new vec(-6,4,18),new vec(6,-4,18),1,new diff(new spec(0.5f,0.1f,0.1f)));
 		scene[1]=new plain(new vec(6,4,18),new vec(-6,4,18),new vec(6,4,-4),1,new grid(new spec(0.1f,0.5f,0.1f),new spec(0.5f,0.1f,0.5f),3,6));
 		scene[2]=new plain(new vec(6,-4,18),new vec(6,4,18),new vec(6,-4,-4),1,new diff(new spec(0.1f,0.1f,0.5f)));
